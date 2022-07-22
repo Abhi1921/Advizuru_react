@@ -1,0 +1,6 @@
+freelancer auth api closed 
+2. ticket auth api closed
+// $user->user_id =Auth::User()->id;
+// $user->user_id =Auth::User()->id;
+3. select_skill rename allskills
+user_skill_deatil chnage userskilldetail

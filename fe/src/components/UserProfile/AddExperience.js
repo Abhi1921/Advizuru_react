@@ -26,8 +26,20 @@ class AddExperience extends React.Component{
         });
 
         this.form.onformsubmit = (fields) => {
-            console.log("please submit your form");
+            let obj = fields;
+            obj.country_id = obj.country;
+            obj.currency_id = obj.currency;
+            axios.post(process.env.REACT_APP_BASE_URL + 'experience/add', obj)
+            .then(function (response) {
+                console.log(response);
+                alert("Saved Successfully");
+            }) 
+            .catch(function (error) {
+                console.log(error, 'error');
+                return error;
+            }); 
         }
+    
     };
 
     async componentDidMount(){

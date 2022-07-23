@@ -47,9 +47,21 @@ class AddRecruitment extends React.Component{
                 recruiter_email:"required",
             });
             this.form.onformsubmit = (fields) => {
-                console.log("please submit your form");
+                let obj = fields;
+                obj.country_id = obj.country;
+                obj.currency_id = obj.currency;
+                axios.post(process.env.REACT_APP_BASE_URL + 'add/recruitment', obj)
+                .then(function (response) {
+                    console.log(response);
+                    alert("Saved Successfully");
+                }) 
+                .catch(function (error) {
+                    console.log(error, 'error');
+                    return error;
+                }); 
             }
         };
+         
     render(){
         return(
             <>

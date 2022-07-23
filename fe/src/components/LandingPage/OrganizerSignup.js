@@ -46,7 +46,7 @@ class OrganizerSignup extends React.Component{
 
             company_name:"required",
             company_size:"required",
-            industry_id:"required",
+            // industry_id:"required",
             company_profile:"required",
             website_url: "required",
             service_type:"required",

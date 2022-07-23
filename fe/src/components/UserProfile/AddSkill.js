@@ -41,7 +41,7 @@ class AddSkill extends React.Component{
             description: "required",
         });
         this.form.onformsubmit = (fields) => {
-            if(Object.keys(this.state.errors).length == 0){
+            if(Object.keys(this.state.errors).length === 0){
                 let obj = fields;
                 obj.self_assesment = this.state.rating;
                 // obj.skill_id = fields.skill;

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users'); 
             $table->string('company_name')->nullable();
             $table->string('company_size')->nullable();
-            $table->integer('industry_id')->nullable();
+            $table->unsignedBigInteger('industry_id')->nullable();
+            $table->foreign('industry_id')->references('industry_id')->on('industries');  
             $table->string('company_profile')->nullable();         
             $table->string('website_url')->nullable();            
             $table->timestamps();

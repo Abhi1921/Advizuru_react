@@ -53,7 +53,7 @@ class CountryStateCity extends Controller
      *     tags={"Country State City"},
      *     @OA\Parameter(
      *         in="query",
-     *         name="id",
+     *         name="country_id",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
@@ -74,7 +74,7 @@ class CountryStateCity extends Controller
      */
     public function getState(Request $request)
     {
-        $users = State::where("id",$request->id)
+        $users = State::where("country_id",$request->country_id)
                     ->get(["state_id","state_name"]);;
         return response()->json([
             'status' => 'success',

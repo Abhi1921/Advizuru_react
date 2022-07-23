@@ -725,7 +725,7 @@
                 "operationId": "4b661a4f58ccc621c1542bc7cdbf26b2",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "country_id",
                         "in": "query",
                         "required": true,
                         "schema": {

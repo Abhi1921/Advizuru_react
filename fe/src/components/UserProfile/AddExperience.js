@@ -7,7 +7,7 @@ class AddExperience extends React.Component{
         this.state = {
             fields : {
                 company_name:"",
-                designation:"",
+                designation_id:"",
                 from_date:"",
                 to_date:"",
                 description:"",
@@ -19,7 +19,7 @@ class AddExperience extends React.Component{
         this.form = new ReactFormInputValidation(this);
         this.form.useRules({
                 company_name:"required",
-                designation:"required",
+                designation_id:"required",
                 from_date:"required",
                 to_date:"required",
                 description:"required",    
@@ -78,7 +78,7 @@ class AddExperience extends React.Component{
                                     </div>
                                     <div className="form-group">
                                         <label>Designation<sup className="text-danger">*</sup></label>
-                                        <select name="designation" id="designationsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
+                                        <select name="designation_id" id="designationsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
                                         {
                                         this.state.allDesignations && this.state.allDesignations.map((row) => {
                                             return (<option key = {row.id} value={row.id}>  {row.name }</option>)

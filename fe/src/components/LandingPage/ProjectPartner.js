@@ -561,8 +561,8 @@ class ProjectPartner extends React.Component{
                                         </div>
                                         
                                         <div className="form-group">
-                                            <label>Monthly Rate</label>
-                                            <input type="number" className="form-select" placeholder="Type Hourly Rate" name="monthly_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => {this.form.handleChangeEvent(e); }}  value={this.state.fields.monthly_rate} />
+                                            <label>Monthly Rat</label>
+                                            <input type="text" className="form-select" placeholder="Type Hourly Rate" name="monthly_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => {this.form.handleChangeEvent(e); }}  value={this.state.fields.monthly_rate} />
                                             
                                             <label className="error">
                                         {this.state.errors.monthly_rate ? this.state.errors.monthly_rate : ""}
@@ -573,7 +573,7 @@ class ProjectPartner extends React.Component{
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label>Hourly Rate</label>
-                                            <input type="number" className="form-select" placeholder="Type Hourly Rate" name="hourly_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => {this.form.handleChangeEvent(e); this.calculateRate(e, 'hourly');}}  value={this.state.fields.hourly_rate} />
+                                            <input type="number" className="form-select" placeholder="Type Hourly Rate" name="hourly_rate"   value={this.state.fields.hourly_rate} />
                                             
                                             <label className="error">
                                                {this.state.errors.hourly_rate ? this.state.errors.hourly_rate : ""}

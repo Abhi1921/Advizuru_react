@@ -7,9 +7,9 @@ class AddProject extends React.Component{
         this.state = {
             fields : {
                 project_name: "",
-                project_duration: "",
-                select_skill:"",
-                description:"",
+                project_duration_month: "",
+                skill_id:"",
+                project_description:"",
             },
             allSkill:[],
             errors:{}
@@ -18,9 +18,9 @@ class AddProject extends React.Component{
         this.form = new ReactFormInputValidation(this);
         this.form.useRules({
             project_name: "required",
-            project_duration: "required",
-            select_skill:"required",
-            description:"required",
+            project_duration_month: "required",
+            skill_id:"required",
+            project_description:"required",
         });
         this.form.onformsubmit = (fields) => {
             let obj = fields;
@@ -73,15 +73,15 @@ class AddProject extends React.Component{
                         </div>
                         <div className="form-group">
                             <label>Project Duration (In Month)<sup className="text-danger">*</sup></label>
-                            <input type="number" min="0" className="form-control" id="projectduration" name="project_duration" placeholder="Type Project Duration" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.project_duration}/>
+                            <input type="number" min="0" className="form-control" id="projectduration" name="project_duration_month" placeholder="Type Project Duration" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.project_duration_month}/>
                             <div className="help-block"></div>
                             <label className="error">
-                            {this.state.errors.project_duration ? this.state.errors.project_duration : ""}
+                            {this.state.errors.project_duration_month ? this.state.errors.project_duration_month : ""}
                             </label> 
                         </div>
                         <div className="form-group">
                             <label>Skills Used<sup className="text-danger">*</sup></label>
-                            <select name="select_skill" id="select_skill" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} multiple="" data-select2-id="select2-data-skills_used" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.select_skill}>
+                            <select name="skill_id" id="skill_id" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} multiple="" data-select2-id="select2-data-skills_used" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skill_id}>
                             <option data-select2-id="select2-data-3-bq7b">Select Skills</option>
                             {
                                 this.state.allSkill && this.state.allSkill.map((row) => {
@@ -94,18 +94,18 @@ class AddProject extends React.Component{
                           
                             <div className="help-block"></div>
                             <label className="error">
-                            {this.state.errors.select_skill ? this.state.errors.select_skill : ""}
+                            {this.state.errors.skill_id ? this.state.errors.skill_id : ""}
                             </label> 
                         </div>
                         <div className="form-group">
-                            <label>Description ( Briefly describe the tasks performed earlier using the skill in 50 to
+                            <label>project_description ( Briefly describe the tasks performed earlier using the skill in 50 to
                             1000 characters)
                             <sup className="text-danger">*</sup>
                             </label>
-                            <textarea name="description" id="skilldescriptionn" className="form-control" rows="4" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.description}></textarea>
+                            <textarea name="project_description" id="skillproject_descriptionn" className="form-control" rows="4" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.project_description}></textarea>
                             <div className="help-block"></div>
                             <label className="error">
-                            {this.state.errors.description ? this.state.errors.description : ""}
+                            {this.state.errors.project_description ? this.state.errors.project_description : ""}
                             </label> 
                         </div>
                     </div>

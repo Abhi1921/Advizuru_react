@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import ReactFormInputValidation from "react-form-input-validation";
 class AddRecruitment extends React.Component{
     constructor(props){
@@ -15,7 +16,7 @@ class AddRecruitment extends React.Component{
                 skills:"",
                 min_experience:"",
                 max_experience:"",
-                minimim_budget:"",
+                minimum_budget:"",
                 max_budget:"",
                 upload_image:"",
                 notes:"",
@@ -23,9 +24,14 @@ class AddRecruitment extends React.Component{
                 recruiter_email:"",
     
             },
-            errors:{}
-
+            allindustry:[],
+            allEducation_Qualification:[],
+            country:[],
+            state:[],
+            city:[],
+            errors: {}
         };
+         
         this.props = props;
         this.form = new ReactFormInputValidation(this);
         this.form.useRules({
@@ -39,17 +45,23 @@ class AddRecruitment extends React.Component{
                 skills:"required",
                 min_experience:"required",
                 max_experience:"required",
-                minimim_budget:"required",
+                minimum_budget:"required",
                 max_budget:"required",
                 upload_image:"required",
                 notes:"required",
-                vendor_recruitment_company:"required",
+                percentage_vendor:"required",
+                 vendor_recruitment_company:"required",
                 recruiter_email:"required",
             });
             this.form.onformsubmit = (fields) => {
                 let obj = fields;
+                obj.skill_id = obj.skills;
                 obj.country_id = obj.country;
-                obj.currency_id = obj.currency;
+                obj.state_id = obj.state;
+                obj.city_id = obj.city;
+                obj.industry_id = obj.industry;
+                obj.designation_id = obj.designation;
+              
                 axios.post(process.env.REACT_APP_BASE_URL + 'add/recruitment', obj)
                 .then(function (response) {
                     console.log(response);
@@ -61,7 +73,67 @@ class AddRecruitment extends React.Component{
                 }); 
             }
         };
-         
+        async componentDidMount() {
+           
+            this.getAllIndustry();
+            this.getAllEducation_Qualification();
+            this.getCountry();
+            this.getState();
+            this.getCity();
+            this.getAllSkill();
+            this.getAllDesignation();
+            
+        } 
+        getAllDesignation = async(request) => {
+            const req = await axios(process.env.REACT_APP_BASE_URL + 'designation');
+            this.setState((prevState)=>({...prevState, alldesignation: req.data.alldesignation}));
+        };
+        getAllSkill = async(request) => {
+            const req = await axios(process.env.REACT_APP_BASE_URL + 'all-skills');
+            this.setState((prevState)=>({...prevState, allSkills: req.data.allSkills}));
+        };
+        getAllIndustry = async(request) => {
+            const req = await axios(process.env.REACT_APP_BASE_URL + 'industry');
+
+            console.log(req, 'reqindustry');
+            this.setState((prevState)=>({...prevState, allIndustry: req.data.data}));
+            
+            };
+            getAllEducation_Qualification = async(request) => {
+                const req = await axios(process.env.REACT_APP_BASE_URL + 'degree');
+
+                console.log(req, 'reqdegree');
+                this.setState((prevState)=>({...prevState, allEducation_Qualification: req.data.data}));
+                
+                };
+                getCountry = async() => {
+                    const req = await axios(process.env.REACT_APP_BASE_URL + 'country');
+                    console.log(req.data.user, 'cc')
+                    this.setState((prevState)=>({
+                        ...prevState, country: req.data.Country
+                    }));
+        
+                };
+                getState = async(id) => {
+                    const req = await axios.post(process.env.REACT_APP_BASE_URL + 'state?country_id='+id);
+                    console.log(req, 'ss')
+                    this.setState((prevState)=>({
+                         ...prevState, state: req.data.State
+                    }));
+                };
+                getCity = async(id) => {
+                    const req = await axios.post(process.env.REACT_APP_BASE_URL + 'city?state_id='+id);
+                    console.log(req, 'dd')
+                    this.setState((prevState)=>({
+                        ...prevState, city: req.data.city
+                    }));
+                };
+                changeCountry = (e) => {
+                    this.getState(e.target.value);
+                }
+                changeState = (e) => {
+                    this.getCity(e.target.value);
+                }
     render(){
         return(
             <>
@@ -77,7 +149,15 @@ class AddRecruitment extends React.Component{
                             <div className="form-group">
                                 <label>Designation <sup className="text-danger">*</sup>
                                 </label>
-                                <input name="designation" className="form-control" type="text" data-validation-message="Designation is required, No special characters." onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation} />
+                                <select name="designation" id="degreesfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-degreesfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
+                                            <option data-select2-id="select2-data-3-bq7b">Select designation</option>
+                                            {
+                                                this.state.alldesignation && this.state.alldesignation.map((row) => {
+                                                    return (<option key = {row.id} value={row.id}>  {row.name }</option>)
+                                                })
+                                            }
+                                            </select>
+                               
                                 <div className="help-block"></div>
                                 <label className="error"> {this.state.errors.designation ? this.state.errors.designation : ""} </label>
                             </div>
@@ -89,6 +169,27 @@ class AddRecruitment extends React.Component{
                                 <label className="error"> {this.state.errors.title ? this.state.errors.title : ""} </label>
                             </div>
                             <div className="form-group">
+                                            <label>industry<sup className="text-danger">*</sup></label>
+                                            <select name="industry" id="institutionsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-institutionsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.institution}>
+                                            <option data-select2-id="select2-data-3-bq7b">Select Industry</option>
+                                            {
+                                                this.state.allIndustry && this.state.allIndustry.map((row) => {
+                                                    return (<option key = {row.industry_id} value={row.industry_id}>  {row.industry_name }</option>)
+                                                })
+                                            }
+                                            </select>
+                                            <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-6091-zx5r" style={{width: '100%'}}>
+                                            <span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-institutionsfield-container" aria-controls="select2-institutionsfield-container">
+                                            <span className="select2-selection__rendered" id="select2-institutionsfield-container" role="textbox" aria-readonly="true" title="Select industry">
+                                            <span className="select2-selection__placeholder"></span></span>
+                                            <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span>
+                                            <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                                            <div className="help-block"></div>
+                                            <label className="error">
+                                            {this.state.errors.institution ? this.state.errors.institution : ""}
+                                            </label> 
+                                        </div>
+                            {/* <div className="form-group">
                                 <label>Industry <sup className="text-danger">*</sup>
                                 </label>
                                 <select name="industry" className="js-states form-control" style={{width:'100%'}} onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.industry}>
@@ -98,87 +199,88 @@ class AddRecruitment extends React.Component{
                                 </select>
                                 <div className="help-block"></div>
                                 <label className="error"> {this.state.errors.industry ? this.state.errors.industry : ""} </label>
-                            </div>
-                            <div className="form-group">
-                                <label>Educational Qualification <sup className="text-danger">*</sup>
-                                </label>
-                                <select name="education_qualification" id="qualification" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-qualification" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.education_qualification}>
-                                <option data-select2-id="select2-data-4-n7tv">Select Qualification</option>
-                                </select>
-                                <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-3-p5wj" style={{width: '100%'}}>
-                                <span className="selection">
-                                    <span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-qualification-container" aria-controls="select2-qualification-container">
-                                    <span className="select2-selection__rendered" id="select2-qualification-container" role="textbox" aria-readonly="true" title="Select Qualification">
-                                        <span className="select2-selection__placeholder">Select Qualification</span>
-                                    </span>
-                                    <span className="select2-selection__arrow" role="presentation">
-                                        <b role="presentation"></b>
-                                    </span>
-                                    </span>
-                                </span>
-                                <span className="dropdown-wrapper" aria-hidden="true"></span>
-                                </span>
-                                <div className="help-block"></div>
-                                <label className="error"> {this.state.errors.education_qualification ? this.state.errors.education_qualification : ""} </label>
-                            </div>
+                            </div> */}
+                             <div className="form-group">
+                                            <label>Education_Qualification<sup className="text-danger">*</sup></label>
+                                            <select name="education_qualification" id="degreesfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-degreesfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.degree}>
+                                            <option data-select2-id="select2-data-3-bq7b">Select Education_Qualification</option>
+                                            {
+                                                this.state.allEducation_Qualification && this.state.allEducation_Qualification.map((row) => {
+                                                    return (<option key = {row.id} value={row.id}>  {row.name }</option>)
+                                                })
+                                            }
+                                            </select>
+                                                
+                                            <div className="help-block"></div>
+                                            <label className="error">
+                                            {this.state.errors.degree ? this.state.errors.degree : ""}
+                                            </label> 
+                                        </div>
                             <div className="row">
                                 <div className="col-md-6">
                                 <div className="form-group">
-                                    <label>City <sup className="text-danger">*</sup>
-                                    </label>
-                                    <select name="city" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} id="contactcity" tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-contactcity" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.city}>
-                                    <option data-select2-id="select2-data-27-53ln">Select city</option>
-                                    </select>
-                                    <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-26-qpuc" style={{width: '100%'}}>
-                                    <span className="selection">
-                                        <span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-contactcity-container" aria-controls="select2-contactcity-container">
-                                        <span className="select2-selection__rendered" id="select2-contactcity-container" role="textbox" aria-readonly="true" title="Select City">
-                                            <span className="select2-selection__placeholder">Select City</span>
-                                        </span>
-                                        <span className="select2-selection__arrow" role="presentation">
-                                            <b role="presentation"></b>
-                                        </span>
-                                        </span>
-                                    </span>
-                                    <span className="dropdown-wrapper" aria-hidden="true"></span>
-                                    </span>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.city ? this.state.errors.city : ""} </label>
-                                </div>
+                                <label>Select City</label>
+                                            <select className="form-select" name="city" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent}  value={this.state.fields.city} >
+                                            
+                                                {
+                                                    this.state.city && this.state.city.map((row) => {
+                                                        return (<option value={row.city_id}>{row.city_name}</option>)
+                                                    })
+                                                }
+                                            </select>
+                                            <label className="error">
+                                              {this.state.errors.city ? this.state.errors.city : ""}
+                                            </label>
+                                        </div>
                                 </div>
                                 <div className="col-md-6">
                                 <div className="form-group">
-                                    <label>State <sup className="text-danger">*</sup>
-                                    </label>
-                                    <select name="state" className="js-states form-control" style={{width:'100%'}} id="contactstate" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.state}>
-                                    <option>Select state</option>
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.state ? this.state.errors.state : ""} </label>
-                                </div>
+                                            <label>State</label>
+                                            <select className="form-select" name="state" placeholder="Enter Your State" onBlur={this.form.handleBlurEvent} onChange={(e) => { this.form.handleChangeEvent(e);this.changeState(e) } } value={this.state.fields.state} >
+                                            {/* <option>State</option>
+                                            <option>Bihar</option> */}
+
+                                            {
+                                                this.state.state && this.state.state.map((row) => {
+                                                    return (<option value={row.state_id}>{row.state_name}</option>)
+                                                })
+                                            }
+                                            </select>
+                                            <label className="error">
+                                                   {this.state.errors.state ? this.state.errors.state : ""}
+                                            </label>
+                                        </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
                                 <div className="form-group">
-                                    <label>Country <sup className="text-danger">*</sup>
-                                    </label>
-                                    <select name="country" id="contactcountry2" className="form-control" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.country}>
-                                    <option>Select Country</option>
-                                    <option value="1">Afghanistan</option>
-                                    <option value="2">Albania</option>
-                                    <option value="3">Algeria</option>
-                                    <option value="245">Zimbabwe</option>
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.country ? this.state.errors.country : ""} </label>
-                                </div>
+                                            <label>Country</label>
+                                            <select className="form-select" name="country" onBlur={this.form.handleBlurEvent} onChange={(e) => {this.form.handleChangeEvent(e); this.changeCountry(e)}} >
+                                           
+                                            {
+                                                this.state.country && this.state.country.map((row) => {
+                                                    return (<option value={row.id}>{row.country_name}</option>)
+                                                })
+                                            }
+                                            
+                                            </select>
+                                            <label className="error">
+                                               {this.state.errors.country ? this.state.errors.country : ""}
+                                            </label>
+                                        </div>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label>Skills</label>
                                 <select name="skills" className="form-control select2-hidden-accessible" id="skillsfield" multiple="" data-select2-id="select2-data-skillsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skills}>
                                 <option data-select2-id="select2-data-23-dfvz">Select Skills</option>
+                                  
+                                {
+                                                this.state.allSkills && this.state.allSkills.map((row) => {
+                                                    return (<option value={row.id}>{row.name}</option>)
+                                                })
+                                            }
                                 </select>
                                 
                             </div>
@@ -211,9 +313,9 @@ class AddRecruitment extends React.Component{
                             <div className="form-group">
                                 <label>Minimum Budget <sup className="text-danger">*</sup>
                                 </label>
-                                <input id="signup_v1-minbudget" name="minimim_budget" className="form-control" type="text" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.minimim_budget} />
+                                <input id="signup_v1-minbudget" name="minimum_budget" className="form-control" type="text" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.minimim_budget} />
                                 <div className="help-block"></div>
-                                <label className="error"> {this.state.errors.minimim_budget ? this.state.errors.minimim_budget : ""} </label>
+                                <label className="error"> {this.state.errors.minimum_budget ? this.state.errors.minimim_budget : ""} </label>
                             </div>
                             <div className="form-group">
                                 <label>Maximum Budget <sup className="text-danger">*</sup>

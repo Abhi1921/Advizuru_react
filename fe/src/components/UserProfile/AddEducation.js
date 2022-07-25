@@ -7,8 +7,8 @@ class AddEducation extends React.Component{
         super(props);
         this.state = {
             fields : {
-                degree_id: "",
-                institute_id: "",
+                degree: "",
+                institute: "",
                 major: "",
                 completion_year: "",
             },
@@ -20,15 +20,15 @@ class AddEducation extends React.Component{
         this.props = props;
         this.form = new ReactFormInputValidation(this);
         this.form.useRules({
-            degree_id: "required",
-            institute_id: "required",
+            degree: "required",
+            institute: "required",
             major: "required",
             completion_year: "required",
         });
         this.form.onformsubmit = (fields) => {
             let obj = fields;
-            obj.country_id = obj.country;
-            obj.currency_id = obj.currency;
+            obj.degree_id = obj.degree;
+            obj.institute_id = obj.institute;
             axios.post(process.env.REACT_APP_BASE_URL + 'education/add', obj)
             .then(function (response) {
                 console.log(response);
@@ -79,7 +79,7 @@ class AddEducation extends React.Component{
                                     <div className="modal-body" data-select2-id="select2-data-6083-zi8u">
                                         <div className="form-group">
                                             <label>Degree<sup className="text-danger">*</sup></label>
-                                            <select name="degree_id" id="degreesfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-degreesfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.degree}>
+                                            <select name="degree" id="degreesfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-degreesfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.degree}>
                                             <option data-select2-id="select2-data-3-bq7b">Select Degree</option>
                                             {
                                                 this.state.allDegree && this.state.allDegree.map((row) => {
@@ -95,7 +95,7 @@ class AddEducation extends React.Component{
                                         </div>
                                         <div className="form-group">
                                             <label>Institution<sup className="text-danger">*</sup></label>
-                                            <select name="institute_id" id="institutionsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-institutionsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.institution}>
+                                            <select name="institute" id="institutionsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-institutionsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.institution}>
                                             <option data-select2-id="select2-data-3-bq7b">Select Institution</option>
                                             {
                                                 this.state.allInstitution && this.state.allInstitution.map((row) => {

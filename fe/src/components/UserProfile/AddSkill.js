@@ -41,33 +41,37 @@ class AddSkill extends React.Component{
             description: "required",
         });
         this.form.onformsubmit = (fields) => {
-            if(Object.keys(this.state.errors).length === 0){
-                let obj = fields;
-                obj.self_assesment = this.state.rating;
-                // obj.skill_id = fields.skill;
-                this.setState({
-                    isLoading: true
-                });
-                let vm = this;
-                axios.post(process.env.REACT_APP_BASE_URL + 'user-skill-details/add', obj)
-                    .then(function (response) {
-                    toast.info(response.data.message);
-                    vm.setState({
-                        isLoading: false
-                    });
-                    vm.setState({
-                        fields: initialFields
-                    });
-                })
-                .catch(function (error) {
-                    console.log(error, 'error');
-                    return error;
-                });
-            }
+            console.log("please submit your form");
+        }
+
+        // this.form.onformsubmit = (fields) => {
+        //     if(Object.keys(this.state.errors).length === 0){
+        //         let obj = fields;
+        //         obj.self_assesment = this.state.rating;
+        //         // obj.skill_id = fields.skill;
+        //         this.setState({
+        //             isLoading: true
+        //         });
+        //         let vm = this;
+        //         axios.post(process.env.REACT_APP_BASE_URL + 'user-skill-details/add', obj)
+        //             .then(function (response) {
+        //             toast.info(response.data.message);
+        //             vm.setState({
+        //                 isLoading: false
+        //             });
+        //             vm.setState({
+        //                 fields: initialFields
+        //             });
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error, 'error');
+        //             return error;
+        //         });
+        //     }
 
             
             
-        }
+        // }
 
         this.changeRating = this.changeRating.bind(this);
         this.getButtonSection = this.getButtonSection.bind(this);

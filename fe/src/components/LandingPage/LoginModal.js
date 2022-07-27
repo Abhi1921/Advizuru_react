@@ -99,7 +99,7 @@ import axios from "axios";
                                             </div>
                                             <a data-bs-target="#forgotPassword" data-bs-toggle="modal" data-bs-dismiss="modal">Forgot Password?</a>
                                         </div>
-                                        <button  type="submit"  name = "submit"  className="btn btn-primary w-100">Login</button>
+                                        <button  type="submit"  name ="submit"  className="btn btn-primary w-100">Login</button>
                                         <span className="d-block or-line"><b>Or</b></span>
                                         <button className="btn btn-light btn-google w-100">
                                             <img src="assets/img/google.png" alt="google image" className="img-fluid me-3" width="20" height="20" />

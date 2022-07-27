@@ -449,12 +449,12 @@ class ProjectPartnerProfile extends React.Component{
                                     </div>
                                     <div className="d-flex flex-column justify-content-start edit-prof ps-3 col-8">
                                     <h5 className="text-truncate fw-bold text-uppercase me-auto w-100" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Test P">
-                                        Test P            
+                                        abhi          
                                     </h5>
                                     <div className="d-flex my-3 text-nowrap">
                                         <span className="orng-bg rounded-circle me-2 d-flex align-items-center justify-content-between">
                                         <i className="fas fa-star text-white fs-12 mx-auto"></i>
-                                        </span> Premium Account
+                                        </span> Premium Accou
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center">
                                         <div className="upload-prof">

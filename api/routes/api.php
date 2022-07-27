@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CountryStateCity;
 use App\Http\Controllers\Freelancer\FreelancerController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Organisation\OrganisationController;
 use App\Http\Controllers\RateCard\RateCardController;
 use App\Http\Controllers\TicketModule\TicketController;
@@ -17,11 +20,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
     Route::post('userprofile', 'profile');
     Route::post('contact_us', 'contact_us');
-    Route::post('forgotpassword', 'forgotpassword');
+    Route::post('reset', 'reset');
     Route::post('resetPassword', 'resetPassword');
 
 });
-
+Route::post('password/email', [ForgotPasswordController::class,'getResetToken']);
+Route::post('password/reset',[ResetPasswordController::class,'reset']);
 Route::controller(OrganisationController::class)->group(function () {
     // register api organisation
     Route::get('designation', 'index');

@@ -40,6 +40,7 @@ class ProjectPartner extends React.Component{
             searchCities : [],
             country:[],
             state:[],
+            skills:[],
             city:[],   
             errors:{}
         };
@@ -76,11 +77,18 @@ class ProjectPartner extends React.Component{
 
         }); 
         this.form.onformsubmit = (fields) => {
+            let obj = fields;
+            obj.skill_id = fields.skills;
+
             this.individualSignUp(this.state.fields);
+            window.location.href = '/user-dashboard';
 
         }
     };
-  
+    getAllSkill = async(request) => {
+        const req = await axios(process.env.REACT_APP_BASE_URL + 'all-skills');
+        this.setState((prevState)=>({...prevState, allSkills: req.data.allSkills}));
+    };
         handleOnSearch = async(string, results) => {
             const req = await axios(process.env.REACT_APP_BASE_URL + 'allcity/'+string);
             console.log(req.data, 'ss')
@@ -113,6 +121,8 @@ class ProjectPartner extends React.Component{
 
         async componentDidMount() {
             this.getCountry();
+            this.getAllSkill();
+        
         
         }
 
@@ -181,9 +191,6 @@ class ProjectPartner extends React.Component{
 
         }
 
-
-    
-  
     render(){
         return(
             <>
@@ -407,14 +414,30 @@ class ProjectPartner extends React.Component{
                                 </div>
                                 <div className="row row-8-flex">
                                     <div className="col-md-4">
-                                        <div className="form-group">
-                                            <label>Specify Primary Skill</label>
-                                            <input type="text" className="form-control" name="skills" placeholder="Type Your Skills" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skills} />
-                                            <label className="error">
-                                            {this.state.errors.skills ? this.state.errors.skills : ""}
-                                            </label>
-                                        </div>
-                                        
+                                    <div className="form-group">
+                        <label>Skill<sup className="text-danger">*</sup></label>
+                        <select name="skill" id="skillsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-skillsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skill}>
+                            {
+                            this.state.allSkills && this.state.allSkills.map((row) => {
+                            return (
+                            <option key = {row.id.toString()} value={row.id}>  {row.name }</option>
+                            )
+                            })
+                            }
+                        </select>
+                        <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-8-43s1" style={{width: '100%'}}>
+                        <span className="selection">
+                        <span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-skillsfield-container" aria-controls="select2-skillsfield-container">
+                        <span className="select2-selection__rendered" id="select2-skillsfield-container" role="textbox" aria-readonly="true" title="LARAVEL">LARAVEL</span>
+                        <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
+                        </span>
+                        </span>
+                        <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                        <div className="help-block"></div>
+                        <label className="error">
+                        {this.state.errors.skill ? this.state.errors.skill : ""}
+                        </label> 
+                    </div>
                                     </div>
                                     
                                     <div className="col-md-4">
@@ -538,8 +561,7 @@ class ProjectPartner extends React.Component{
                                                  {this.state.errors.resume ? this.state.errors.resume : ""}
                                            </label>
                                         </div>
-                                    </div>
-                                    
+                                    </div>                                   
                                 </div> 
                                 </div>
                                 <div className="d-card">
@@ -547,6 +569,7 @@ class ProjectPartner extends React.Component{
                                     <i className="flaticon flaticon-check me-3"></i>
                                     <h3 className="page-heading">Financial Information</h3>
                                 </div>
+                                
                                 <div className="row row-8-flex">
                                     <div className="col-md-4">
                                         <div className="form-group">
@@ -561,43 +584,43 @@ class ProjectPartner extends React.Component{
                                         </div>
                                         
                                         <div className="form-group">
-                                            <label>Monthly Rat</label>
-                                            <input type="text" className="form-select" placeholder="Type Hourly Rate" name="monthly_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => {this.form.handleChangeEvent(e); }}  value={this.state.fields.monthly_rate} />
-                                            
-                                            <label className="error">
-                                        {this.state.errors.monthly_rate ? this.state.errors.monthly_rate : ""}
-                                        </label>
+                                            <label>Hourly Rate <sup className="text-danger">*</sup></label>
+                                            <input type="number" step=".01" min="0"   className="form-control" id="hourlyRate" name="hourly_rate" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.hourly_rate}/>
+                                            <div className="help-block"></div>
+                                                <label className="error">
+                                                {this.state.errors.hourly_rate ? this.state.errors.hourly_rate : ""}
+                                                </label> 
                                         </div>
                                         
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="form-group">
-                                            <label>Hourly Rate</label>
-                                            <input type="number" className="form-select" placeholder="Type Hourly Rate" name="hourly_rate"   value={this.state.fields.hourly_rate} />
-                                            
-                                            <label className="error">
-                                               {this.state.errors.hourly_rate ? this.state.errors.hourly_rate : ""}
-                                            </label>
+                                    <div className="form-group">
+                                            <label>Daily Rate <sup className="text-danger">*</sup></label> 
+                                            <input type="number" step=".01" min="0"   className="form-control" id="dailyRate" name="daily_rate" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.daily_rate}/>
+                                            <div className="help-block"></div>
+                                                <label className="error">
+                                                {this.state.errors.daily_rate ? this.state.errors.daily_rate : ""}
+                                                </label> 
                                         </div>
                                         
                                         <div className="form-group">
-                                            <label>Annually Rate</label>
-                                                <input type="number" className="form-select" placeholder="Type Hourly Rate" name="annually_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => { this.form.handleChangeEvent(e); }}  value={this.state.fields.annually_rate} />
-                                            <label className="error">
+                                            <label>Monthly Rate <sup className="text-danger">*</sup></label>
+                                            <input type="number" step=".01" min="0" className="form-control" id="monthlyRate" name="monthly_rate" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.monthly_rate}/>
+                                            <div className="help-block"></div>
+                                              <label className="error">
+                                                {this.state.errors.monthly_rate ? this.state.errors.monthly_rate : ""}
+                                                </label> 
+                                        </div>
+                                        
+                                    </div>
+                                    <div className="col-md-4">
+                                    <div className="form-group">
+                                            <label>Annually Rate <sup className="text-danger">*</sup></label>
+                                            <input type="number" step=".01" min="0"  className="form-control" id="annuallyRate" name="annually_rate" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.annually_rate}/>
+                                            <div className="help-block"></div>
+                                                <label className="error">
                                                   {this.state.errors.annually_rate ? this.state.errors.annually_rate : ""}
-                                            </label>
-                                        </div>
-                                        
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="form-group">
-                                            <label>Daily Rate</label>
-                                            <input type="number" className="form-select" placeholder="Type Hourly Rate" name="daily_rate" onBlur={this.form.handleBlurEvent} onKeyDown={(e) => {this.form.handleChangeEvent(e); }} value={this.state.fields.daily_rate} />
-                                            
-                                           
-                                            <label className="error">
-                                              {this.state.errors.daily_rate ? this.state.errors.daily_rate : ""}
-                                            </label>
+                                                </label> 
                                         </div>
                                     </div>
                                    

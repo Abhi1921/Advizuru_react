@@ -27,7 +27,7 @@ class AuthController extends Controller
     
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','registerOrganisation','registerFreelancer','contact_us','forgotpassword']]);
+        $this->middleware('auth:api', ['except' => ['login','registerOrganisation','registerFreelancer','contact_us','forgotpassword','resetPassword']]);
     }
 
      /**
@@ -864,6 +864,5 @@ public function resetPassword(Request $request)
     
     }
 // contact us End
-
 
 }

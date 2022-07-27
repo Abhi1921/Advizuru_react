@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import { forgotPassword } from "./../../services/Auth";
 import ReactFormInputValidation from "react-form-input-validation";
 class ForgotPassword extends React.Component{
@@ -15,10 +16,21 @@ class ForgotPassword extends React.Component{
             email: "required|email",
         });
         this.form.onformsubmit = (fields) => {
-            const response= forgotPassword(this.state.fields);
-            console.log(response, 'res');
+            // const response= forgotPassword(this.state.fields);
+            axios.post(process.env.REACT_APP_BASE_URL + 'password/reset')
+            .then(function (response) {
+                console.log(response);
+                alert("forget password link sent");
+            }) 
+            .catch(function (error) {
+                console.log(error, 'error');
+                return error;
+            }); 
         }
+    
     };
+
+   
     render() {
         return(
         <>

@@ -14,7 +14,7 @@ class OrganizerSignup extends React.Component{
                 password_confirmation: "",
                 company_name:"",
                 company_size:"",
-                industry_id:"",
+                industry:"",
                 company_profile:"",
                 website_url: "",
                 service_type: [],
@@ -33,6 +33,7 @@ class OrganizerSignup extends React.Component{
             country:[],
             state:[],
             city: [],
+            designation:[],
             industry: [],
             allServices : [],
             errors:{}
@@ -46,7 +47,7 @@ class OrganizerSignup extends React.Component{
 
             company_name:"required",
             company_size:"required",
-            // industry_id:"required",
+            industry:"required",
             company_profile:"required",
             website_url: "required",
             service_type:"required",
@@ -68,10 +69,23 @@ class OrganizerSignup extends React.Component{
 
         }); 
         this.form.onformsubmit = (fields) => {
+            let obj = fields;
+            obj.designation_id = obj.designation;
+            obj.industry_id= obj.industry;
             this.OwnerSignup(this.state.fields);
+            window.location.href = '/user-dashboard';
         }
     };
-
+    getAllDesignation = async(request) => {
+        const req = await axios(process.env.REACT_APP_BASE_URL + 'designation');
+        console.log(req,'testingApi');
+        this.setState((prevState)=>({...prevState, allDesignations:req.data.data}))
+    }
+    getAllIndustry = async(request) => {
+        const req = await axios(process.env.REACT_APP_BASE_URL + 'industry');
+        console.log(req,'testingApi');
+        this.setState((prevState)=>({...prevState, allIndustry:req.data.data}))
+    }
 
     handleOnSearch = async(string, results) => {
         const req = await axios(process.env.REACT_APP_BASE_URL + 'allcity/'+string);
@@ -107,8 +121,10 @@ class OrganizerSignup extends React.Component{
 
     async componentDidMount() {
         this.getCountry();
-        this.getIndustry();
+       
         this.getAllServices();
+        this.getAllDesignation();
+        this.getAllIndustry();
     }
 
     getAllServices = async () => {
@@ -164,10 +180,7 @@ class OrganizerSignup extends React.Component{
 //    });
 };
 
-    getIndustry = async() => {
-        const req = await axios(process.env.REACT_APP_BASE_URL + 'industry');
-        this.setState((prevState)=>({...prevState, industry: req.data.industry}));
-    };
+   
 
     render(){
         return(
@@ -261,9 +274,9 @@ class OrganizerSignup extends React.Component{
                             <div className="col-md-4">
                                 <div className="form-group">
                                     <label>Industry<sup className="text-danger">*</sup></label>
-                                    <select className="form-select" name="industry_id" placeholder="Select Industry" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.industry_id}>
+                                    <select className="form-select" name="industry" placeholder="Select Industry" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.industry_id}>
                                             {
-                                                this.state.industry && this.state.industry.map((row) => {
+                                                this.state.allIndustry && this.state.allIndustry.map((row) => {
                                                     return (<option key = {row.industry_id} value={row.industry_id}>  {row.industry_name }</option>)
                                                 })
                                             }
@@ -341,16 +354,25 @@ class OrganizerSignup extends React.Component{
                                     </label>
                                 </div>
                                 <div className="form-group">
-                                    <label>Designation<sup className="text-danger">*</sup></label>                                     
-                                    <select name="designation" id="designationsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>                                   
-                                    <option value="select" key="2">Select Designation</option>
-                                    <option value="php" key="3">Select PHP Developer</option>
-                                    </select>
-                                   <div className="help-block"></div>
-                                   <label className="error">
+                                        <label>Designation<sup className="text-danger">*</sup></label>
+                                        <select name="designation" id="designationsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
+                                        {
+                                        this.state.allDesignations && this.state.allDesignations.map((row) => {
+                                            return (<option key = {row.id} value={row.id}>  {row.name }</option>)
+                                        })
+                                        }    
+                                         </select>
+                                        <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-6-njnf" style={{width: '100%'}}>
+                                        <span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-designationsfield-container" aria-controls="select2-designationsfield-container">
+                                        <span className="select2-selection__rendered" id="select2-designationsfield-container" role="textbox" aria-readonly="true" title="Select Designation">
+                                        <span className="select2-selection__placeholder">Select Designation</span></span>
+                                        <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span>
+                                        <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                                        <div className="help-block"></div>
+                                        <label className="error">
                                         {this.state.errors.designation ? this.state.errors.designation : ""}
-                                    </label>
-                                </div>
+                                        </label> 
+                                    </div>
                                 <div className="form-group">
                                     <label>Contact Number</label>
                                     <input type="text" className="form-control" name="phone_number" placeholder="Type Contact Phone Number" onBlur={this.form.handleBlurEvent} onChange={(e) => {this.form.handleChangeEvent(e)}} value={this.state.fields.phone_number}/>

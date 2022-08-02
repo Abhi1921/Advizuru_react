@@ -305,8 +305,7 @@ class AuthController extends Controller
         $contact->pincode = $request->input('pincode');
         $contact->save();
     }
-    DB::commit();
-      
+    DB::commit();   
         return response()->json([
             'status' => '200 ok',
             'error' =>'false',
@@ -328,8 +327,7 @@ class AuthController extends Controller
             'message' =>  $e 
         ], 201);
     }
-
-        
+   
     }
 
     //organisation end//

@@ -355,19 +355,15 @@ class OrganizerSignup extends React.Component{
                                 </div>
                                 <div className="form-group">
                                         <label>Designation<sup className="text-danger">*</sup></label>
-                                        <select name="designation" id="designationsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
+                                        <select name="designation" id="designationsfield" placeholder="Select Designation" className="form-control" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
                                         {
                                         this.state.allDesignations && this.state.allDesignations.map((row) => {
                                             return (<option key = {row.id} value={row.id}>  {row.name }</option>)
                                         })
                                         }    
                                          </select>
-                                        <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-6-njnf" style={{width: '100%'}}>
-                                        <span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-designationsfield-container" aria-controls="select2-designationsfield-container">
-                                        <span className="select2-selection__rendered" id="select2-designationsfield-container" role="textbox" aria-readonly="true" title="Select Designation">
-                                        <span className="select2-selection__placeholder">Select Designation</span></span>
-                                        <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span>
-                                        <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+         
+                                        <span className="dropdown-wrapper" aria-hidden="true"></span>
                                         <div className="help-block"></div>
                                         <label className="error">
                                         {this.state.errors.designation ? this.state.errors.designation : ""}
@@ -456,6 +452,7 @@ class OrganizerSignup extends React.Component{
                                     </header>
                                 </div> */}
                                     <select className="form-select select2-hidden-accessible" name="city" id="contactcity" data-select2-id="select2-data-contactcity" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.city}>
+                                    <option value="select option">Select City</option>
                                                 {
                                                     this.state.city && this.state.city.map((row) => {
                                                         return (<option value={row.city_id} key={row.city_id}>{row.city_name}</option>)

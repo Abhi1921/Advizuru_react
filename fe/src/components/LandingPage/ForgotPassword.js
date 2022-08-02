@@ -16,21 +16,30 @@ class ForgotPassword extends React.Component{
             email: "required|email",
         });
         this.form.onformsubmit = (fields) => {
-            // const response= forgotPassword(this.state.fields);
-            axios.post(process.env.REACT_APP_BASE_URL + 'password/reset')
-            .then(function (response) {
-                console.log(response);
-                alert("forget password link sent");
-            }) 
-            .catch(function (error) {
-                console.log(error, 'error');
-                return error;
-            }); 
+            this.forgotPassword(this.state.fields);
+            forgotPassword = async(request) => {
+        
+                await   axios.post(process.env.REACT_APP_BASE_URL + 'sendemail', request)
+               .then(function (response) {
+           
+                   console.log('test ', response);
+                   // this.setState({redirect : 'user-dashboard'});
+                   window.location.href = '/user-dashboard';
+               
+               })
+               .catch(function (error) {
+                   console.log(error, 'error');
+                   if(error && (error.response.status == 422 || error.response.status == 401)){
+                       alert('Please enter valid creds');
+           
+                   }
+               });     
         }
-    
     };
 
-   
+  
+
+    };
     render() {
         return(
         <>
@@ -43,13 +52,13 @@ class ForgotPassword extends React.Component{
                                 <p className="mb-0">You've successfully verified your account. Enter new password below.</p>
                             </div>
                             <form onSubmit={this.form.handleSubmit}>
+                             
                                 <div className="form-group-md">
                                     <i className="flaticon flaticon-email-1"></i>
                                     <div className="form-floating">
                                         <input type="email" className="form-control" id="floatingInput" name="email" placeholder="name@example.com" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.email}/>
                                         <label htmlFor="floatingInput">Your Email address</label>
                                     </div>
-
                                     <label className="error">
                                             {
                                                 this.state.errors.email ? this.state.errors.email : ""

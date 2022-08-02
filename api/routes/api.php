@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Organisation\OrganisationController;
 use App\Http\Controllers\RateCard\RateCardController;
 use App\Http\Controllers\TicketModule\TicketController;
+use App\Http\Controllers\Training\TrainingController;
+use App\Http\Controllers\RaiseTicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +26,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('resetPassword', 'resetPassword');
 
 });
-Route::post('password/email', [ForgotPasswordController::class,'getResetToken']);
+Route::post('sendemail', [ForgotPasswordController::class,'getResetToken']);
 Route::post('password/reset',[ResetPasswordController::class,'reset']);
 Route::controller(OrganisationController::class)->group(function () {
     // register api organisation
@@ -95,7 +97,19 @@ Route::controller(TicketController::class)->group(function () {
 
 });
 
+Route::controller(TrainingController::class)->group(function () {
+    Route::post('add/training-profile', 'addTrainingProfile');
+    Route::post('add/training-programing', 'addTrainerProgram');
 
+
+});
+
+Route::controller(RaiseTicketController::class)->group(function () {
+    Route::post('add/raiseticket', 'addRaiseTicket');
+  
+
+
+});
 Route::controller(RateCardController::class)->group(function () {
     Route::post('add/rate-card','addRateCard');
     Route::put('update/rate-card/{User}','updateRateCard');

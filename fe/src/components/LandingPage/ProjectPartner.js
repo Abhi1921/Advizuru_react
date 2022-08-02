@@ -385,6 +385,7 @@ class ProjectPartner extends React.Component{
                                             </div> */}
                                             <label>Select City</label>
                                             <select className="form-select" name="city" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent}  value={this.state.fields.city} >
+                                                <option value="select option">Select City</option>
                                             
                                                 {
                                                     this.state.city && this.state.city.map((row) => {

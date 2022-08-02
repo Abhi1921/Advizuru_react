@@ -27,6 +27,7 @@ class AddRecruitment extends React.Component{
             allindustry:[],
             allEducation_Qualification:[],
             country:[],
+            getAllDesignation:[],
             state:[],
             city:[],
             errors: {}
@@ -86,8 +87,9 @@ class AddRecruitment extends React.Component{
         } 
         getAllDesignation = async(request) => {
             const req = await axios(process.env.REACT_APP_BASE_URL + 'designation');
-            this.setState((prevState)=>({...prevState, alldesignation: req.data.alldesignation}));
-        };
+            console.log(req,'testingApi');
+            this.setState((prevState)=>({...prevState, allDesignations:req.data.data}))
+        }
         getAllSkill = async(request) => {
             const req = await axios(process.env.REACT_APP_BASE_URL + 'all-skills');
             this.setState((prevState)=>({...prevState, allSkills: req.data.allSkills}));
@@ -147,20 +149,26 @@ class AddRecruitment extends React.Component{
                             </div>
                             <div className="modal-body">
                             <div className="form-group">
-                                <label>Designation <sup className="text-danger">*</sup>
-                                </label>
-                                <select name="designation" id="degreesfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-degreesfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
-                                            <option data-select2-id="select2-data-3-bq7b">Select designation</option>
-                                            {
-                                                this.state.alldesignation && this.state.alldesignation.map((row) => {
-                                                    return (<option key = {row.id} value={row.id}>  {row.name }</option>)
-                                                })
-                                            }
-                                            </select>
-                               
-                                <div className="help-block"></div>
-                                <label className="error"> {this.state.errors.designation ? this.state.errors.designation : ""} </label>
-                            </div>
+                                        <label>Designation</label>
+                                        <select name="designation" id="designationsfield" placeholder="Select Designation" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} data-select2-id="select2-data-designationsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.designation}>
+                                        {
+                                        this.state.allDesignations && this.state.allDesignations.map((row) => {
+                                            return (<option key = {row.id} value={row.id}>  {row.name }</option>)
+                                        })
+                                        }    
+                                        </select>
+                                        <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-6-njnf" style={{width: '100%'}}>
+                                        <span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-designationsfield-container" aria-controls="select2-designationsfield-container">
+                                        <span className="select2-selection__rendered" id="select2-designationsfield-container" role="textbox" aria-readonly="true" title="Select Designation">
+                                        <span className="select2-selection__placeholder">Select Designation</span></span>
+                                        <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span>
+                                        <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                                        <div className="help-block"></div>
+                                        <label className="error">
+                                        {this.state.errors.designation ? this.state.errors.designation : ""}
+                                        </label> 
+                                    </div>
+                            
                             <div className="form-group">
                                 <label>Title <sup className="text-danger">*</sup>
                                 </label>

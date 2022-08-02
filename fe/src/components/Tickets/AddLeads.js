@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import ReactFormInputValidation from "react-form-input-validation";
 class AddLeads extends React.Component{
     constructor(props){
@@ -54,7 +55,50 @@ class AddLeads extends React.Component{
             this.form.onformsubmit = (fields) => {
                 console.log("please submit your form");
             }
-    }
+        };
+        async componentDidMount() {
+           
+       
+            this.getCountry();
+            this.getState();
+            this.getCity();
+            this.getAllSkill();
+        
+            
+        } 
+        getAllSkill = async(request) => {
+            const req = await axios(process.env.REACT_APP_BASE_URL + 'all-skills');
+            this.setState((prevState)=>({...prevState, allSkills: req.data.allSkills}));
+        };
+            getCountry = async() => {
+                const req = await axios(process.env.REACT_APP_BASE_URL + 'country');
+                console.log(req.data.user, 'cc')
+                this.setState((prevState)=>({
+                    ...prevState, country: req.data.Country
+                }));
+    
+            };
+            getState = async(id) => {
+                const req = await axios.post(process.env.REACT_APP_BASE_URL + 'state?country_id='+id);
+                console.log(req, 'ss')
+                this.setState((prevState)=>({
+                     ...prevState, state: req.data.State
+                }));
+            };
+            getCity = async(id) => {
+                const req = await axios.post(process.env.REACT_APP_BASE_URL + 'city?state_id='+id);
+                console.log(req, 'dd')
+                this.setState((prevState)=>({
+                    ...prevState, city: req.data.city
+                }));
+            };
+            changeCountry = (e) => {
+                this.getState(e.target.value);
+            }
+            changeState = (e) => {
+                this.getCity(e.target.value);
+            }
+    
     render(){
         return(
             <>
@@ -105,7 +149,15 @@ class AddLeads extends React.Component{
                             <div className="form-group">
                                 <label>Skills <sup className="text-danger">*</sup>
                                 </label>
-                                <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skills} name="skills" id="skillsName4" className="select2-hidden-accessible" style={{width:'100%'}} multiple="" tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-skillsName4"></select>
+                                <select name="skills" className="form-control select2-hidden-accessible" id="skillsfield" multiple="" data-select2-id="select2-data-skillsfield" tabIndex="-1" aria-hidden="true" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skills}>
+                                <option data-select2-id="select2-data-23-dfvz">Select Skills</option>
+                                  
+                                {
+                                                this.state.allSkills && this.state.allSkills.map((row) => {
+                                                    return (<option value={row.id}>{row.name}</option>)
+                                                })
+                                            }
+                                </select>
                                 <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-47-ycr6" style={{width: '100%'}}>
                                 {/* <span className="selection">
                                     <span className="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="-1" aria-disabled="false">
@@ -229,55 +281,56 @@ class AddLeads extends React.Component{
                             <div className="row">
                                 <div className="col-md-6">
                                 <div className="form-group">
-                                    <label>City <sup className="text-danger">*</sup>
-                                    </label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.city} name="city" className="form-select select2-hidden-accessible" id="contactcity4" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-contactcity4"></select>
-                                    <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-48-31sk" style={{width: '100%'}}>
-                                    <span className="selection">
-                                        <span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-contactcity4-container" aria-controls="select2-contactcity4-container">
-                                        <span className="select2-selection__rendered" id="select2-contactcity4-container" role="textbox" aria-readonly="true" title="Select City">
-                                            <span className="select2-selection__placeholder">Select City</span>
-                                        </span>
-                                        <span className="select2-selection__arrow" role="presentation">
-                                            <b role="presentation"></b>
-                                        </span>
-                                        </span>
-                                    </span>
-                                    <span className="dropdown-wrapper" aria-hidden="true"></span>
-                                    </span>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.city ? this.state.errors.city : ""} </label>
-
-                                </div>
+                                <label>Select City</label>
+                                            <select className="form-select" name="city" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent}  value={this.state.fields.city} >
+                                            
+                                                {
+                                                    this.state.city && this.state.city.map((row) => {
+                                                        return (<option value={row.city_id}>{row.city_name}</option>)
+                                                    })
+                                                }
+                                            </select>
+                                            <label className="error">
+                                              {this.state.errors.city ? this.state.errors.city : ""}
+                                            </label>
+                                        </div>
                                 </div>
                                 <div className="col-md-6">
                                 <div className="form-group">
-                                    <label>State <sup className="text-danger">*</sup>
-                                    </label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.state} name="state" className="form-select " id="contactstate4">
-                                    <option >Select state</option>
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.state ? this.state.errors.state : ""} </label>
+                                            <label>State</label>
+                                            <select className="form-select" name="state" placeholder="Enter Your State" onBlur={this.form.handleBlurEvent} onChange={(e) => { this.form.handleChangeEvent(e);this.changeState(e) } } value={this.state.fields.state} >
+                                            {/* <option>State</option>
+                                            <option>Bihar</option> */}
 
-                                </div>
+                                            {
+                                                this.state.state && this.state.state.map((row) => {
+                                                    return (<option value={row.state_id}>{row.state_name}</option>)
+                                                })
+                                            }
+                                            </select>
+                                            <label className="error">
+                                                   {this.state.errors.state ? this.state.errors.state : ""}
+                                            </label>
+                                        </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
                                 <div className="form-group">
-                                    <label>Country</label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.country} name="country" id="contactcountry4" className="form-select ">
-                                    <option >Select Country</option>
-                                    <option value="1">Afghanistan</option>
-                                    <option value="2">Albania</option>
-                                    <option value="3">Algeria</option>
-                                    
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.country ? this.state.errors.country : ""} </label>
-
-                                </div>
+                                            <label>Country</label>
+                                            <select className="form-select" name="country" onBlur={this.form.handleBlurEvent} onChange={(e) => {this.form.handleChangeEvent(e); this.changeCountry(e)}} >
+                                           
+                                            {
+                                                this.state.country && this.state.country.map((row) => {
+                                                    return (<option value={row.id}>{row.country_name}</option>)
+                                                })
+                                            }
+                                            
+                                            </select>
+                                            <label className="error">
+                                               {this.state.errors.country ? this.state.errors.country : ""}
+                                            </label>
+                                        </div>
                                 </div>
                             </div>
                             <h4 className="popup-heading">OTHER DETAILS</h4>

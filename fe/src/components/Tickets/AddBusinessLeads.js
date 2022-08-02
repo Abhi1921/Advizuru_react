@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import ReactFormInputValidation from "react-form-input-validation";
 class AddBusinessLeads extends React.Component{
     constructor(props){
@@ -25,6 +26,10 @@ class AddBusinessLeads extends React.Component{
                 description:"",
     
             },
+            skills:[],
+            country:[],
+            city:[],
+            state:[],
             errors:{}
 
         };
@@ -52,9 +57,70 @@ class AddBusinessLeads extends React.Component{
                
             });
             this.form.onformsubmit = (fields) => {
-                console.log("please submit your form");
+                let obj = fields;
+                obj.skill_id = obj.skills;
+                obj.country_id = obj.country;
+                obj.state_id = obj.state;
+                obj.city_id = obj.city;
+                obj.industry_id = obj.industry;
+                obj.designation_id = obj.designation;
+              
+                axios.post(process.env.REACT_APP_BASE_URL + 'add/bussiness-lead', obj)
+                .then(function (response) {
+                    console.log(response);
+                    alert("Saved Successfully");
+                }) 
+                .catch(function (error) {
+                    console.log(error, 'error');
+                    return error;
+                }); 
             }
+            
     };
+    async componentDidMount() {
+        this.getCountry();
+        this.getAllSkill();
+    
+    
+    }
+    getAllSkill = async(request) => {
+        const req = await axios(process.env.REACT_APP_BASE_URL + 'all-skills');
+        this.setState((prevState)=>({...prevState, allSkills: req.data.allSkills}));
+    };
+    getCountry = async() => {
+        const req = await axios(process.env.REACT_APP_BASE_URL + 'country');
+        console.log(req.data.user, 'cc')
+        this.setState((prevState)=>({
+            ...prevState, country: req.data.Country
+        }));
+
+    };
+
+    getState = async(id) => {
+        const req = await axios.post(process.env.REACT_APP_BASE_URL + 'state?country_id='+id);
+        console.log(req, 'ss')
+        this.setState((prevState)=>({
+             ...prevState, state: req.data.State
+        }));
+    };
+
+
+    getCity = async(id) => {
+        const req = await axios.post(process.env.REACT_APP_BASE_URL + 'city?state_id='+id);
+        console.log(req, 'dd')
+        this.setState((prevState)=>({
+            ...prevState, city: req.data.city
+        }));
+    };
+
+    changeCountry = (e) => {
+        this.getState(e.target.value);
+    }
+
+    changeState = (e) => {
+        this.getCity(e.target.value);
+    }
+
     render(){
         return(
             <>
@@ -87,21 +153,28 @@ class AddBusinessLeads extends React.Component{
                         </div>
                         
                         <div className="form-group">
-                            <label>Skills <sup className="text-danger">*</sup></label>
-                            <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skills} name="skills" id="skillsName" className="select2-hidden-accessible" style={{width:'100%'}} multiple="" data-select2-id="select2-data-skillsName" tabIndex="-1" aria-hidden="true">
-                                <option data-select2-id="select2-data-21-r5nk">Select Skill</option>
-                            </select>
-                            {/* <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-20-8x55" style={{width: '100%'}}>
-                                <span className="selection">
-                                    <span className="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="-1" aria-disabled="false">
-                                    <ul className="select2-selection__rendered" id="select2-skillsName-container"></ul>
-                                    <span className="select2-search select2-search--inline"><textarea className="select2-search__field" type="search" tabIndex="0" autoCorrect="off" autoCapitalize="none" spellCheck="false" role="searchbox" aria-autocomplete="list" autoComplete="off" aria-label="Search" aria-describedby="select2-skillsName-container" placeholder="Select Skills" style={{width: '100%'}}></textarea></span>
-                                    </span>
-                                </span>
-                                <span className="dropdown-wrapper" aria-hidden="true"></span>
-                            </span> */}
-                            <div className="help-block"></div>
-                            <label className="error"> {this.state.errors.skills ? this.state.errors.skills : ""} </label>
+                        <label>Skill<sup className="text-danger">*</sup></label>
+                        <select name="skill" id="skillsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-skillsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.skill}>
+                            {
+                            this.state.allSkills && this.state.allSkills.map((row) => {
+                            return (
+                            <option key = {row.id.toString()} value={row.id}>  {row.name }</option>
+                            )
+                            })
+                            }
+                        </select>
+                        <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-8-43s1" style={{width: '100%'}}>
+                        <span className="selection">
+                        <span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-skillsfield-container" aria-controls="select2-skillsfield-container">
+                        <span className="select2-selection__rendered" id="select2-skillsfield-container" role="textbox" aria-readonly="true" title="LARAVEL">LARAVEL</span>
+                        <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
+                        </span>
+                        </span>
+                        <span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                        <div className="help-block"></div>
+                        <label className="error">
+                        {this.state.errors.skill ? this.state.errors.skill : ""}
+                        </label> 
                         </div>
                         <div className="row">
                             <div className="col-md-6">
@@ -206,37 +279,57 @@ class AddBusinessLeads extends React.Component{
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label>City <sup className="text-danger">*</sup></label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.city} name="city" className="form-select select2-hidden-accessible" id="contactcityleads" style={{width:'100%'}} data-select2-id="select2-data-contactcityleads" tabIndex="-1" aria-hidden="true">
-                                    <option data-select2-id="select2-data-2-o7a1">Select city*</option>
-                                    </select>
-                                    <span className="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-bk75" style={{width: '100%'}}><span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabIndex="0" aria-disabled="false" aria-labelledby="select2-contactcityleads-container" aria-controls="select2-contactcityleads-container"><span className="select2-selection__rendered" id="select2-contactcityleads-container" role="textbox" aria-readonly="true" title="Select City"><span className="select2-selection__placeholder">Select City</span></span><span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span className="dropdown-wrapper" aria-hidden="true"></span></span>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.city ? this.state.errors.city : ""} </label>
-                                </div>
+                            <div className="form-group">
+                                <label>Select City</label>
+                                            <select className="form-select" name="city" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent}  value={this.state.fields.city} >
+                                            
+                                        <option value="select city">Select City</option>
+                                                {
+                                                    this.state.city && this.state.city.map((row) => {
+                                                        return (<option value={row.city_id}>{row.city_name}</option>)
+                                                    })
+                                                }
+                                            </select>
+                                            <label className="error">
+                                              {this.state.errors.city ? this.state.errors.city : ""}
+                                            </label>
+                                        </div>
                             </div>
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label>State <sup className="text-danger">*</sup></label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.state} name="state" className="form-select " id="contactstate">
-                                    <option>Select state*</option>
-                                    
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.state ? this.state.errors.state : ""} </label>
-                                </div>
+                            <div className="form-group">
+                                            <label>State</label>
+                                            <select className="form-select" name="state" placeholder="Enter Your State" onBlur={this.form.handleBlurEvent} onChange={(e) => { this.form.handleChangeEvent(e);this.changeState(e) } } value={this.state.fields.state} >
+                                            {/* <option>State</option>
+                                            <option>Bihar</option> */}
+
+                                            {
+                                                this.state.state && this.state.state.map((row) => {
+                                                    return (<option value={row.state_id}>{row.state_name}</option>)
+                                                })
+                                            }
+                                            </select>
+                                            <label className="error">
+                                                   {this.state.errors.state ? this.state.errors.state : ""}
+                                            </label>
+                                        </div>
                             </div>
                             <div className="col-md-12">
-                                <div className="form-group">
-                                    <label>Country <sup className="text-danger">*</sup></label>
-                                    <select onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.country} name="country" id="contactcountry2" className="form-select ">
-                                    <option>Select Country</option> 
-                                    </select>
-                                    <div className="help-block"></div>
-                                    <label className="error"> {this.state.errors.country ? this.state.errors.country : ""} </label>
+                            <div className="form-group">
+                                            <label>Country</label>
+                                            <select className="form-select" name="country" onBlur={this.form.handleBlurEvent} onChange={(e) => {this.form.handleChangeEvent(e); this.changeCountry(e)}} >
+                                           
+                                            {
+                                                this.state.country && this.state.country.map((row) => {
+                                                    return (<option value={row.id}>{row.country_name}</option>)
+                                                })
+                                            }
+                                            
+                                            </select>
+                                            <label className="error">
+                                               {this.state.errors.country ? this.state.errors.country : ""}
+                                            </label>
+                                        </div>
                                 </div>
-                            </div>
                         </div>
                         <h4 className="popup-heading">OTHER DETAILS</h4>
                         <div className="row">

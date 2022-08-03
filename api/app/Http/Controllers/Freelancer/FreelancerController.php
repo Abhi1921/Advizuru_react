@@ -57,35 +57,35 @@ class FreelancerController extends Controller
         ]);
     }
 
-// selectProfile End
+    // selectProfile End
 
-// allSkills
+    // allSkills
 
-/**
- * Get Detail Profile
- * @OA\Get (
- *     path="/api/all-skills",
- *     tags={"Freelancer"},
- *       security={
- *    {
- *     "passport": {}},
- *    },
- *     @OA\Response(
- *         response=200,
- *         description="success",
+    /**
+     * Get Detail Profile
+     * @OA\Get (
+     *     path="/api/all-skills",
+     *     tags={"Freelancer"},
+     *       security={
+     *    {
+     *     "passport": {}},
+     *    },
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
 
- *         @OA\JsonContent(
- *
- *              @OA\Property(property="id", type="number", example=1),
- *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
- *             @OA\Property(property="password", type="string", example="abhishek"),
- *
- *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
- *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
- *         )
- *     )
- * )
- */
+     *         @OA\JsonContent(
+     *
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="abhishek"),
+     *
+     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
+     *         )
+     *     )
+     * )
+     */
     public function allSkills()
     {
         $skills = allSkills::all();
@@ -128,9 +128,9 @@ class FreelancerController extends Controller
     {
         return allSkills::where('name', 'LIKE', '%' . $name . '%')->get();
     }
-// Skills End
+    // Skills End
 
-// Institute
+    // Institute
 
     /**
      * Get Detail Profile
@@ -195,12 +195,12 @@ class FreelancerController extends Controller
      */
     public function searchInstitute($name)
     {
-        return Institute::where('name','LIKE','%'.$name.'%')->get();
+        return Institute::where('name', 'LIKE', '%' . $name . '%')->get();
     }
 
-//Institute End
+    //Institute End
 
-// Degree start
+    // Degree start
 
     /**
      * Get Detail Profile
@@ -233,103 +233,103 @@ class FreelancerController extends Controller
         ]);
     }
 
-/**
- * Get Detail Profile
- * @OA\get (
- *     path="/api/searchdegree/{name}",
- *     tags={"Freelancer"},
- *       security={
- *    {
- *     "passport": {}},
- *    },
- *     @OA\Parameter(
- *         in="path",
- *         name="name",
- *         required=true,
- *         @OA\Schema(type="string")
- *        ),
- *     @OA\Response(
- *         response=200,
- *         description="success",
- *         @OA\JsonContent(
- *              @OA\Property(property="id", type="number", example=1),
- *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
- *             @OA\Property(property="password", type="string", example="abhishek"),
- *
- *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
- *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
- *         )
- *     )
- * )
- */
+    /**
+     * Get Detail Profile
+     * @OA\get (
+     *     path="/api/searchdegree/{name}",
+     *     tags={"Freelancer"},
+     *       security={
+     *    {
+     *     "passport": {}},
+     *    },
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="name",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *        ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="abhishek"),
+     *
+     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
+     *         )
+     *     )
+     * )
+     */
     public function searchdegree($name)
     {
         return Degree::where('name', 'LIKE', '%' . $name)->get();
     }
 
-// Degree End
+    // Degree End
 
-// User_skill_details
+    // User_skill_details
 
-/**
- * Get Detail Profile
- * @OA\post (
- *     path="/api/user-skill-details/add",
- *     tags={"Freelancer"},
- *       security={
- *    {
- *     "passport": {}},
- *    },
- *      @OA\Parameter(
- *         in="query",
- *         name="skill_id",
- *         required=true,
- *         @OA\Schema(type="integer")
- *        ),
- *            @OA\Parameter(
- *         in="query",
- *         name="description",
- *         required=true,
- *         @OA\Schema(type="string")
- *        ),
- *     @OA\Parameter(
- *         in="query",
- *         name="year_of_experience",
- *         required=true,
- *         @OA\Schema(type="integer")
- *        ),
- *            @OA\Parameter(
- *         in="query",
- *         name="support_project",
- *         required=true,
- *         @OA\Schema(type="integer")
- *        ),
- *     @OA\Parameter(
- *         in="query",
- *         name="skill_level",
- *         required=true,
- *         @OA\Schema(type="integer")
- *        ),
- *            @OA\Parameter(
- *         in="query",
- *         name="implementation",
- *         required=true,
- *         @OA\Schema(type="integer")
- *        ),
- *     @OA\Response(
- *         response=200,
- *         description="success",
- *         @OA\JsonContent(
- *              @OA\Property(property="id", type="number", example=1),
- *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
- *             @OA\Property(property="password", type="string", example="abhishek"),
- *
- *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
- *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
- *         )
- *     )
- * )
- */
+    /**
+     * Get Detail Profile
+     * @OA\post (
+     *     path="/api/user-skill-details/add",
+     *     tags={"Freelancer"},
+     *       security={
+     *    {
+     *     "passport": {}},
+     *    },
+     *      @OA\Parameter(
+     *         in="query",
+     *         name="skill_id",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *        ),
+     *            @OA\Parameter(
+     *         in="query",
+     *         name="description",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *        ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="year_of_experience",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *        ),
+     *            @OA\Parameter(
+     *         in="query",
+     *         name="support_project",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *        ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="skill_level",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *        ),
+     *            @OA\Parameter(
+     *         in="query",
+     *         name="implementation",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *        ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="email", type="string", example="abc@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="abhishek"),
+     *
+     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
+     *         )
+     *     )
+     * )
+     */
     public function User_skill_details(Request $request)
     {
         DB::beginTransaction();
@@ -353,20 +353,18 @@ class FreelancerController extends Controller
                 'message' => 'User Skills data stored',
                 'data' => $user,
             ], 201);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => '200',
                 'error' => true,
                 'message' => $e,
             ], 201);
-
         }
-
     }
-// User_skill_details End
+    // User_skill_details End
 
-// crud user skill start
+    // crud user skill start
     public function update(Request $request, UserSkillDetails $User)
     {
         $data = $request->only('description', 'year_of_experience', 'support_project', 'skill_level', 'implementation');
@@ -412,9 +410,9 @@ class FreelancerController extends Controller
         ]);
     }
 
-// Crud END user skills detail
+    // Crud END user skills detail
 
-// myProject
+    // myProject
     /**
      * Get Detail Profile
      * @OA\post (
@@ -481,11 +479,10 @@ class FreelancerController extends Controller
             'message' => 'Project stored',
             'data' => $user,
         ], 201);
-
     }
-// my project
+    // my project
 
-// CRUD PROJECT
+    // CRUD PROJECT
 
     public function updateProject(Request $request, myProject $User)
     {
@@ -498,7 +495,7 @@ class FreelancerController extends Controller
 
         ]);
 
-       
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
@@ -536,9 +533,9 @@ class FreelancerController extends Controller
         ]);
     }
 
-// Crud END Project
+    // Crud END Project
 
-// Education start
+    // Education start
     /**
      * Get Detail Profile
      * @OA\post (
@@ -602,9 +599,9 @@ class FreelancerController extends Controller
             'data' => $user,
         ], 201);
     }
-// Education End
+    // Education End
 
-// Crud EDucation
+    // Crud EDucation
 
     public function updateEducation(Request $request, Education $User)
     {
@@ -614,7 +611,7 @@ class FreelancerController extends Controller
             'institute_id' => 'integer',
             'major' => 'string',
             'completion_year' => 'string',
-        ]);  
+        ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
@@ -648,9 +645,9 @@ class FreelancerController extends Controller
         ]);
     }
 
-// Crud END Education
+    // Crud END Education
 
-// Experience Start
+    // Experience Start
 
     /**
      * Get Detail Profile
@@ -722,9 +719,9 @@ class FreelancerController extends Controller
             'data' => $user,
         ], 201);
     }
-// Experience End
+    // Experience End
 
-// CRUD Experience
+    // CRUD Experience
 
     public function updateExperience(Request $request, Experience $User)
     {
@@ -735,7 +732,7 @@ class FreelancerController extends Controller
             'start_date' => 'string',
             'end_date' => 'string',
             'description' => 'string',
-        ]);      
+        ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
@@ -769,9 +766,9 @@ class FreelancerController extends Controller
         ]);
     }
 
-// Crud Experience
+    // Crud Experience
 
-// ADD REMUNERATION
+    // ADD REMUNERATION
 
     /**
      * Get Detail Profile
@@ -782,7 +779,7 @@ class FreelancerController extends Controller
      *    {
      *     "passport": {}},
      *    },
-      *           @OA\Parameter(
+     *           @OA\Parameter(
      *         in="query",
      *         name="currency_id",
      *         required=true,
@@ -851,9 +848,9 @@ class FreelancerController extends Controller
         ], 201);
     }
 
-// REMUNERATION End
+    // REMUNERATION End
 
-// crud remuration
+    // crud remuration
 
     public function updateRemuneration(Request $request, Remuneration $User)
     {
@@ -865,7 +862,7 @@ class FreelancerController extends Controller
             'monthly_rate' => 'integer',
             'hourly_rate' => 'integer',
         ]);
-          if ($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
         $User = $User->update([
@@ -899,41 +896,41 @@ class FreelancerController extends Controller
         ]);
     }
 
-// Crud rumeration
+    // Crud rumeration
 
-//
-/**
- * Get Detail Profile
- * @OA\post (
- *     path="/api/visa/add",
- *     tags={"Freelancer"},
- *  security={
- *    {
- *     "passport": {}},
- *    },
- *           @OA\Parameter(
- *         in="query",
- *         name="country_id",
- *         required=true,
- *         @OA\Schema(type="integer" )
- *     ),
- *
- *           @OA\Parameter(
- *         in="query",
- *         name="status",
- *
- *         required=true,
- *         @OA\Schema(type="string" )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="success",
- *         @OA\JsonContent(
- *               @OA\Property(property="type", type="string", example=" passport,workvisa,require"),
- *         )
- *     )
- * )
- */
+    //
+    /**
+     * Get Detail Profile
+     * @OA\post (
+     *     path="/api/visa/add",
+     *     tags={"Freelancer"},
+     *  security={
+     *    {
+     *     "passport": {}},
+     *    },
+     *           @OA\Parameter(
+     *         in="query",
+     *         name="country_id",
+     *         required=true,
+     *         @OA\Schema(type="integer" )
+     *     ),
+     *
+     *           @OA\Parameter(
+     *         in="query",
+     *         name="status",
+     *
+     *         required=true,
+     *         @OA\Schema(type="string" )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *               @OA\Property(property="type", type="string", example=" passport,workvisa,require"),
+     *         )
+     *     )
+     * )
+     */
 
     public function visa(Request $request)
     {
@@ -942,7 +939,7 @@ class FreelancerController extends Controller
         $user->country_id = $request->input('country_id');
         $user->status = $request->input('status');
         $user->save();
-            
+
         return response()->json([
             'status' => '200 ok',
             'error' => 'false',
@@ -960,7 +957,7 @@ class FreelancerController extends Controller
         $validator = Validator::make($data, [
             'country_id' => 'string',
             'status' => 'string',
-        ]); 
+        ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
@@ -991,5 +988,5 @@ class FreelancerController extends Controller
             'message' => 'visa deleted successfully',
         ]);
     }
-// Crud visa
+    // Crud visa
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,21 +25,21 @@ use App\Mail\WelcomeMail;
 
 
 class AuthController extends Controller
-{  
-    
+{
+
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','registerOrganisation','registerFreelancer','contact_us','forgotpassword','resetPassword']]);
+        $this->middleware('auth:api', ['except' => ['login', 'registerOrganisation', 'registerFreelancer', 'contact_us', 'forgotpassword', 'resetPassword']]);
     }
 
-     /**
+    /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-       
+
         $users = user::all();
         return response()->json([
             'status' => 'success',
@@ -45,14 +47,14 @@ class AuthController extends Controller
         ]);
     }
 
-// login
+    // login
 
     /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-        /**
+    /**
      * Get Detail Profile
      * @OA\Post (
      *     path="/api/login",
@@ -85,35 +87,34 @@ class AuthController extends Controller
      * )
      */
 
-    public function login(Request $request  ){
+    public function login(Request $request)
+    {
         $user = new User;
         // $user->user_id =Auth::User()->id;
         // Log::info('user sucessfully login : '.Auth::User());
         // dd(Auth::User());
         DB::beginTransaction();
-        try{
+        try {
             DB::commit();
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-
         }
-     
-    	$validator = Validator::make($request->all(), [
+
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        if (! $token = auth('api')->attempt($validator->validated())) {
+        if (!$token = auth('api')->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-       
+
         return $this->createNewToken($token);
     }
 
-     // Login End
+    // Login End
 
     // organisation start
 
@@ -260,81 +261,79 @@ class AuthController extends Controller
      * )
      */
 
-    public function registerOrganisation(Request $request) {
+    public function registerOrganisation(Request $request)
+    {
         DB::beginTransaction();
-        try{
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6'
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:100|unique:users',
+                'password' => 'required|string|min:6'
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+            $user = User::create(array_merge(
+
+                $validator->validated(),
+                ['password' => bcrypt($request->password)]
+
+            ));
+
+            $user->save();
+
+            if ($user->save()) {
+                $organisation = new Organisation;
+                $organisation->user_id = $user->id;
+                $organisation->company_name = $request->input('company_name');
+                $organisation->company_size = $request->input('company_size');
+                $organisation->industry_id = $request->input('industry_id');
+                $organisation->website_url = $request->input('website_url');
+                $organisation->company_profile = $request->input('company_profile');
+                $organisation->save();
+            }
+            if ($organisation->save()) {
+                $contact = new ContactDetail;
+                $contact->user_id = $user->id;
+                $contact->full_name = $request->input('full_name');
+                $contact->designation = $request->input('designation');
+                $contact->phone_number = $request->input('phone_number');
+                $contact->landline_number = $request->input('landline_number');
+                $contact->mobile_number = $request->input('mobile_number');
+                $contact->address = $request->input('address');
+                $contact->country = $request->input('country');
+                $contact->state = $request->input('state');
+                $contact->city = $request->input('city');
+                $contact->pincode = $request->input('pincode');
+                $contact->save();
+            }
+            DB::commit();
+            return response()->json([
+                'status' => '200 ok',
+                'error' => 'false',
+                'message' => 'User successfully registered',
+                'data' => $user,
+                'organisation' => $organisation,
+                'contact' => $contact,
+
+
+            ], 201);
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'status' => '200',
+                'error' => true,
+                'message' =>  $e
+            ], 201);
         }
-        $user = User::create(array_merge(
-            
-            $validator->validated(),
-            ['password' => bcrypt($request->password)]
-           
-        ));
-
-    $user->save();
-
-    if($user->save()){
-        $organisation = new Organisation;
-        $organisation->user_id = $user->id;
-        $organisation->company_name = $request->input('company_name');
-        $organisation->company_size = $request->input('company_size');
-        $organisation->industry_id = $request->input('industry_id');
-        $organisation->website_url = $request->input('website_url');
-        $organisation->company_profile = $request->input('company_profile');
-        $organisation->save();
-    }
-    if($organisation->save()){
-        $contact = new ContactDetail;
-        $contact->user_id = $user->id;
-        $contact->full_name = $request->input('full_name');
-        $contact->designation = $request->input('designation');
-        $contact->phone_number = $request->input('phone_number');
-        $contact->landline_number = $request->input('landline_number');
-        $contact->mobile_number = $request->input('mobile_number');
-        $contact->address = $request->input('address');
-        $contact->country = $request->input('country');
-        $contact->state = $request->input('state');
-        $contact->city = $request->input('city');
-        $contact->pincode = $request->input('pincode');
-        $contact->save();
-    }
-    DB::commit();   
-        return response()->json([
-            'status' => '200 ok',
-            'error' =>'false',
-            'message' => 'User successfully registered',
-            'data' => $user,
-            'organisation' => $organisation,
-            'contact' => $contact,
-     
-
-        ], 201);  
-
-    }
-    catch(\Exception $e){
-    
-        DB::rollBack();
-        return response()->json([
-            'status' => '200',
-            'error' =>true,
-            'message' =>  $e 
-        ], 201);
-    }
-   
     }
 
     //organisation end//
 
     // freelancer start
 
-     /**
+    /**
      * Get Detail Profile
      * @OA\Post (
      *     path="/api/freelancer/register",
@@ -518,43 +517,44 @@ class AuthController extends Controller
      * )
      */
 
-    public function registerFreelancer(Request $request) {
+    public function registerFreelancer(Request $request)
+    {
         DB::beginTransaction();
-        try{
+        try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|between:2,100',
                 'email' => 'required|string|email|max:100|unique:users',
-                'password' => 'required|string|min:6', 
-                'full_name' => 'required|string',   
-                'gender' => 'required|string',   
-                'phone_number' => 'required|string', 
-                'country' => 'required|string',   
-                'state' => 'required|string',   
-                'city' => 'required|string', 
-                'address' => 'required|string',   
-                'pin_code' => 'required|string',  
+                'password' => 'required|string|min:6',
+                'full_name' => 'required|string',
+                'gender' => 'required|string',
+                'phone_number' => 'required|string',
+                'country' => 'required|string',
+                'state' => 'required|string',
+                'city' => 'required|string',
+                'address' => 'required|string',
+                'pin_code' => 'required|string',
                 'dob' => 'date'
             ]);
-                 
-            if($validator->fails()){
+
+            if ($validator->fails()) {
                 return response()->json($validator->errors()->toJson(), 400);
             }
             $user = User::create(array_merge(
-        
+
                 $validator->validated(),
                 ['password' => bcrypt($request->password)]
-                
+
             ));
-    
-        
+
+
             $name =  $request->input("full_name");
             $name = explode(" ", $name);
-            $fname = isset($name[0]) ? $name[0]:'';
+            $fname = isset($name[0]) ? $name[0] : '';
             unset($name[0]);
             $lname = implode(' ', $name);
-            
+
             $user->save();
-            if($user->save()){
+            if ($user->save()) {
                 $freelancer = new freelancer;
                 $freelancer->user_id =  $user->id;
                 $freelancer->first_name = $fname;
@@ -571,50 +571,47 @@ class AuthController extends Controller
                 $freelancer->pincode = $request->input('pin_code');
                 $freelancer->save();
             }
-            if($freelancer->save()){
-                $financial = new Financial_Information; 
+            if ($freelancer->save()) {
+                $financial = new Financial_Information;
                 $financial->user_id =  $user->id;
-                $financial-> currency= $request->input('currency');
+                $financial->currency = $request->input('currency');
                 $financial->hourly_rate = $request->input('hourly_rate');
                 $financial->daily_rate = $request->input('daily_rate');
                 $financial->monthly_rate = $request->input('monthly_rate');
                 $financial->annually_rate = $request->input('annually_rate');
                 $financial->save();
             }
-                if($financial->save()){
-                    $professional = new professional_Information; 
-                    $professional->user_id =  $user->id;
-                    $professional-> total_experience= $request->input('total_experience');
-                    $professional->current_company = $request->input('current_company');
-                    $professional-> skills= $request->input('skills');
-                    $professional->full_time_available = $request->input('full_time_available');
-                    $professional->part_time_available = $request->input('part_time_available');
-                    $professional->available = $request->input('available');
-                    $professional->profile_id = $request->input('profile_id');
-                    $professional->save();
-            } 
+            if ($financial->save()) {
+                $professional = new professional_Information;
+                $professional->user_id =  $user->id;
+                $professional->total_experience = $request->input('total_experience');
+                $professional->current_company = $request->input('current_company');
+                $professional->skills = $request->input('skills');
+                $professional->full_time_available = $request->input('full_time_available');
+                $professional->part_time_available = $request->input('part_time_available');
+                $professional->available = $request->input('available');
+                $professional->profile_id = $request->input('profile_id');
+                $professional->save();
+            }
             DB::commit();
 
             return response()->json([
                 'status' => '200',
-                'error' =>false,
+                'error' => false,
                 'message' => 'User successfully registered',
                 'data' => $user,
-                'freelancer'=>$freelancer,
-                'financial'=>$financial,
-                'professional'=>$professional,
+                'freelancer' => $freelancer,
+                'financial' => $financial,
+                'professional' => $professional,
             ], 201);
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => '200',
-                'error' =>true,
+                'error' => true,
                 'message' =>  $e
             ], 201);
-
-        }       
-        
+        }
     }
 
     // freelancer End
@@ -625,7 +622,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
         return response()->json(['message' => 'User successfully signed out']);
     }
@@ -634,7 +632,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return $this->createNewToken(auth()->refresh());
     }
     /**
@@ -642,10 +641,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth()->user());
     }
-     
+
     /**
      * Get the token array structure.
      *
@@ -653,9 +653,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
         return response()->json([
-          
+
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' =>  3600,
@@ -670,9 +671,9 @@ class AuthController extends Controller
      *     path="/api/userprofile",
      *     tags={"Autentication"},
      *       security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
      *     @OA\Parameter(
      *         in="query",
      *         name="type",
@@ -693,85 +694,86 @@ class AuthController extends Controller
      *     )
      * )
      */
- public function profile($id){
-    Log::info('Showing user profile for user: '.$id);
+    public function profile($id)
+    {
+        Log::info('Showing user profile for user: ' . $id);
 
-    return view('user.profile', ['user' => User::findOrFail($id)]);
+        return view('user.profile', ['user' => User::findOrFail($id)]);
 
-    //  return response()->json(auth()->user());
- }
- 
-//  forgot Password 
+        //  return response()->json(auth()->user());
+    }
 
-public function forgotpassword(Request $request){
-    // $request->validate(['email' => 'required|email']);
-    
-    $email = $request->only('email');
-    $rules = ['email'=>'required:users,email'];
-     $validator = Validator::make($request->all(), $rules);
-     if ($validator->fails()) {
-        // handler errors
-        $erros = $validator->errors();
-        // echo $erros;
-        return $erros;
-     }else{
-         $user = User::where('email', '=', $email)->first();
-         try { 
-             // verify the credentials and create a token for the user
-             if (! $token = JWTAuth::fromUser($user)) { 
-                 return response()->json(['error' => 'invalid_credentials'], 401);
-             } 
-         } catch (JWTException $e) { 
-             // something went wrong 
-             return response()->json(['error' => 'could_not_create_token'], 500); 
-         } 
-         // if no errors are encountered we can return a JWT 
-    //  return response()->json(compact('token')); 
+    //  forgot Password 
 
-        $status = Password::sendResetLink($email);
-    
-        return $status === Password::RESET_LINK_SENT
+    public function forgotpassword(Request $request)
+    {
+        // $request->validate(['email' => 'required|email']);
+
+        $email = $request->only('email');
+        $rules = ['email' => 'required:users,email'];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            // handler errors
+            $erros = $validator->errors();
+            // echo $erros;
+            return $erros;
+        } else {
+            $user = User::where('email', '=', $email)->first();
+            try {
+                // verify the credentials and create a token for the user
+                if (!$token = JWTAuth::fromUser($user)) {
+                    return response()->json(['error' => 'invalid_credentials'], 401);
+                }
+            } catch (JWTException $e) {
+                // something went wrong 
+                return response()->json(['error' => 'could_not_create_token'], 500);
+            }
+            // if no errors are encountered we can return a JWT 
+            //  return response()->json(compact('token')); 
+
+            $status = Password::sendResetLink($email);
+
+            return $status === Password::RESET_LINK_SENT
                 ? response()->json(['status' => $status])
                 : response()->json(['email' => $status]);
+        }
+    }
+    public function resetPassword(Request $request)
+    { {
+            $this->validate($request, [
+                'token' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|confirmed',
+            ]);
 
-     }
+            $credentials = $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            );
 
-}
-public function resetPassword(Request $request)
- { 	{
-    $this->validate($request, [
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|confirmed',
-    ]);
+            $response = $this->passwords->reset($credentials, function ($user, $password) {
+                $user->password = bcrypt($password);
+                $user->save();
 
-    $credentials = $request->only(
-        'email', 'password', 'password_confirmation', 'token'
-    );
+                $this->auth->login($user);
+            });
 
-    $response = $this->passwords->reset($credentials, function($user, $password)
-    {
-        $user->password = bcrypt($password);
-        $user->save();
+            switch ($response) {
+                case PasswordBroker::PASSWORD_RESET:
+                    return redirect($this->redirectPath());
 
-        $this->auth->login($user);
-    });
-
-    switch ($response)
-    {
-        case PasswordBroker::PASSWORD_RESET:
-            return redirect($this->redirectPath());
-
-        default:
-            return redirect()->back()
+                default:
+                    return redirect()->back()
                         ->withInput($request->only('email'))
                         ->withErrors(['email' => trans($response)]);
+            }
+        }
     }
-}
-    }
-// forgot password End
+    // forgot password End
 
-// conatct us 
+    // conatct us 
 
 
     /**
@@ -780,9 +782,9 @@ public function resetPassword(Request $request)
      *     path="/api/contact_us",
      *     tags={"Autentication"},
      *        security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
      *     @OA\Parameter(
      *         in="query",
      *         name="name",
@@ -829,38 +831,36 @@ public function resetPassword(Request $request)
             'data' => $users,
         ]);
     }
-    public function contact_us(Request $request) {
+    public function contact_us(Request $request)
+    {
         DB::beginTransaction();
-        try{
+        try {
             DB::commit();
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-
         }
-     
+
         $validator = Validator::make($request->all(), [
-           
-                    'name' => 'required|string|min:2',
-                    'email' => 'required|string|email|max:100|unique:users',
-                    'subject' => 'required|string|min:2',
-                    'message'=> 'required|string|min:2',         
-                ]);
-                if($validator->fails()){
-                    return response()->json($validator->errors()->toJson(), 400);
-                }
-                $user = contact_us::create(array_merge(
-                            $validator->validated(),
-                            
-                        ));
-                return response()->json([
-                    'status' => '200 ok',
-                    'error' =>'false',
-                    'message' => 'contact us data stored',
-                    'data' => $user
-                ], 201);   
-    
+
+            'name' => 'required|string|min:2',
+            'email' => 'required|string|email|max:100|unique:users',
+            'subject' => 'required|string|min:2',
+            'message' => 'required|string|min:2',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $user = contact_us::create(array_merge(
+            $validator->validated(),
+
+        ));
+        return response()->json([
+            'status' => '200 ok',
+            'error' => 'false',
+            'message' => 'contact us data stored',
+            'data' => $user
+        ], 201);
     }
-// contact us End
+    // contact us End
 
 }

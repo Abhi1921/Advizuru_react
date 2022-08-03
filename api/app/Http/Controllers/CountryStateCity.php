@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
 use Illuminate\Http\Request;
 use Validator;
 use Response;
@@ -42,10 +42,9 @@ class CountryStateCity extends Controller
         return response()->json([
             'status' => 'success',
             'Country' => $users,
-        ]);      
-        
+        ]);
     }
-   // profile data
+    // profile data
     /**
      * Get Detail Profile
      * @OA\post (
@@ -74,17 +73,17 @@ class CountryStateCity extends Controller
      */
     public function getState(Request $request)
     {
-        $users = State::where("country_id",$request->country_id)
-                    ->get(["state_id","state_name"]);;
+        $users = State::where("country_id", $request->country_id)
+            ->get(["state_id", "state_name"]);;
         return response()->json([
             'status' => 'success',
             'State' => $users,
         ]);
         // $data = 
-                  
+
         // return response()->json($data);
     }
-      // profile data
+    // profile data
     /**
      * Get Detail Profile
      * @OA\post (
@@ -113,36 +112,33 @@ class CountryStateCity extends Controller
      */
     public function getCity(Request $request)
     {
-         $users = City::where("state_id",$request->state_id)
-        ->get(["city_id","city_name"]);;
+        $users = City::where("state_id", $request->state_id)
+            ->get(["city_id", "city_name"]);;
 
         return response()->json([
 
             'status' => 'success',
 
             'city' => $users,
-]);
+        ]);
     }
- 
+
     public function getCurrency(Request $request)
     {
-        $users = currency::where("id",$request->id)
-        ->get(["name"]);;
+        $users = currency::where("id", $request->id)
+            ->get(["name"]);;
 
         return response()->json([
 
             'status' => 'success',
 
             'Currency' => $users,
-]);
+        ]);
     }
 
     public function getallcity($city_name)
     {
         // $countries= mpp_country::get(["name","id"]);
-        return City::where('city_name', 'LIKE', '%'. $city_name. '%')->select("city_id as id" , "city_name as name", "state_id")->get();
-      
-        
+        return City::where('city_name', 'LIKE', '%' . $city_name . '%')->select("city_id as id", "city_name as name", "state_id")->get();
     }
-
 }

@@ -22,4 +22,7 @@ Route::get('oauth/{driver}/callback', [LoginController::class,'handleProviderCal
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/patnerlist',[App\Http\Controllers\admin\AdminController::class,'index'])->name('patnerlist');
+Route::get('/userskills',[App\Http\Controllers\admin\AdminController::class,'userskills'])->name('userskills');
+
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Organisation;
+
 use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,20 +9,21 @@ use App\Models\designations;
 use App\Models\industry;
 use App\Models\Services;
 use App\Models\ServiceType;
+
 class OrganisationController extends Controller
-{    
-    
+{
+
     // designation
 
-        /**
+    /**
      * Get Detail Profile
      * @OA\Get (
      *     path="/api/designation",
      *     tags={"Organisation"},
      *       security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
  
      *     @OA\Response(
      *         response=200,
@@ -48,9 +50,7 @@ class OrganisationController extends Controller
     public function fetchdesignation($name)
     {
         // $countries= mpp_country::get(["name","id"]);
-        return designations::where('name', 'LIKE', '%'. $name. '%')->get();
-      
-        
+        return designations::where('name', 'LIKE', '%' . $name . '%')->get();
     }
     // designation
 
@@ -63,9 +63,9 @@ class OrganisationController extends Controller
      *     path="/api/industry",
      *     tags={"Organisation"},
      *        security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
  
      *     @OA\Response(
      *         response=200,
@@ -88,8 +88,8 @@ class OrganisationController extends Controller
             'status' => '200 ok',
             'data' => $users,
         ]);
-    } 
-// industry End
+    }
+    // industry End
 
 
     /**
@@ -98,9 +98,9 @@ class OrganisationController extends Controller
      *     path="/api/serviceType",
      *     tags={"Organisation"},
      *        security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
  
      *     @OA\Response(
      *         response=200,
@@ -117,7 +117,7 @@ class OrganisationController extends Controller
      * )
      */
 
-// service type
+    // service type
     public function ServiceType()
     {
         $users = ServiceType::all();
@@ -135,9 +135,9 @@ class OrganisationController extends Controller
      *     path="/api/services",
      *     tags={"Organisation"},
      *        security={
- *    {
- *     "passport": {}},
- *    },
+     *    {
+     *     "passport": {}},
+     *    },
  
      *     @OA\Response(
      *         response=200,

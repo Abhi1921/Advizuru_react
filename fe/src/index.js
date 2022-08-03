@@ -15,6 +15,9 @@ import ProjectPartnerProfile from './components/LandingPage/ProjectPartnerProfil
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Ticket from './views/User/Tickets';
 import UserDashboard  from "./views/User/Profile"
+// admin
+import Adminlogin from './components/Admin/Adminlogin';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -32,6 +35,7 @@ root.render(
           <Route path="terms-conditions" element={<TermsConditions></TermsConditions>}></Route>
           <Route path="cookies" element={<Cookies></Cookies>}></Route>
           <Route path="user-dashboard" element={<UserDashboard></UserDashboard>}></Route>
+          <Route path="admin-login" element={<Adminlogin></Adminlogin>}></Route>
           <Route path="project-partner-profile" element={<ProjectPartnerProfile></ProjectPartnerProfile>}></Route>
           {/* Ticket Module */}
           <Route path="sub-contract" element={<Ticket></Ticket>}></Route>

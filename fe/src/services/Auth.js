@@ -5,7 +5,11 @@ function login(request) {
         return res;
     });
 }
-
+function Adminlogin(request) { 
+    call_api('POST', 'login', request, {}).then(function (res) { 
+        return res;
+    });
+}
 function OwnerSignup(request) {
     call_api('POST', 'register', request, {}).then(function (res) {
         return res;
@@ -25,4 +29,4 @@ function forgotPassword(request){
 }
 
 
-export {login, OwnerSignup, individualSignUp, forgotPassword}
+export {Adminlogin,login, OwnerSignup, individualSignUp, forgotPassword}

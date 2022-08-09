@@ -28,7 +28,8 @@ Route::get('/userskills',[App\Http\Controllers\admin\AdminController::class,'use
 Route::get('/ticket',[App\Http\Controllers\admin\AdminController::class,'ticket'])->name('ticket');
 Route::get('/ticket/edit{id}',[App\Http\Controllers\admin\AdminController::class,'editTicket'])->name('editticket');
 Route::post('ticket/{id}',[App\Http\Controllers\admin\AdminController::class,'updateTicket'])->name('ticketupdate');
-
+Route::get('user/delete/{id}',[App\Http\Controllers\admin\AdminController::class,'userdelete'])->name('userdelete');
+Route::get('delete/{id}',[App\Http\Controllers\admin\AdminController::class,'ticketdelete'])->name('ticketdelete');
 Route::get('/userskills/edit{id}',[App\Http\Controllers\admin\AdminController::class,'edit'])->name('edit');
 Route::post('userskills/{id}',[App\Http\Controllers\admin\AdminController::class,'update'])->name('update');
 

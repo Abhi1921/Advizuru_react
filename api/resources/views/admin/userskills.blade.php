@@ -244,7 +244,7 @@
 										<td>{{ $value->alskills->name }}</td>
 										<td><span class="tag tag-success">Active</span></td>
                                         <td><a href="{{route('edit',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-											<a href="javascript:void(0);" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
+											<a href="{{route('userdelete',$value->id) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
 									</tr>
 
 									@endforeach

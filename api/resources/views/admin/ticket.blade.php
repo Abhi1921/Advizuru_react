@@ -251,7 +251,7 @@
                                         
 											
 											<td><a href="{{route('editticket',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-											<a href="javascript:void(0);" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
+											<a href="{{route('ticketdelete',$value->id) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
 									</tr>
 
 									@endforeach

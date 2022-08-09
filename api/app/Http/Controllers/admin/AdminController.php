@@ -79,7 +79,19 @@ return redirect()->route('home')
         return view('admin.ticket')->with('user', $user);
     }
 
-
-
+    public function userdelete(Request $request ,$id)
+    {
+            $edit = UserSkillDetails::findOrFail($id);
+            $edit->id =$request->id;
+            $edit->delete();
+            return redirect('/userskills')->with('success', 'Game Data is successfully deleted');
+    }
+public function ticketdelete(Request $request ,$id)
+{
+        $edit = RaiseTicket::findOrFail($id);
+        $edit->id =$request->id;
+        $edit->delete();
+        return redirect('/ticket')->with('success', 'Game Data is successfully deleted');
+}
     
 }

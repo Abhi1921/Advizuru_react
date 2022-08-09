@@ -30,7 +30,6 @@ import axios from "axios";
                 
             }
         };
-
         getLogin = async(request) => {
             
          await   axios.post(process.env.REACT_APP_BASE_URL + 'login', request)
@@ -38,7 +37,7 @@ import axios from "axios";
 
             console.log('test ', response);
             // this.setState({redirect : 'user-dashboard'});
-            window.location.href = 'home';
+            window.location.href = 'admin';
         
         })
         .catch(function (error) {
@@ -106,8 +105,7 @@ import axios from "axios";
                                     </form>
                                 </div>
                             </div>
-                        </div>
-                      
+                        </div>                     
                 </>
             )
         }   

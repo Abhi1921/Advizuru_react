@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\admin\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,5 +25,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/patnerlist',[App\Http\Controllers\admin\AdminController::class,'index'])->name('patnerlist');
 Route::get('/userskills',[App\Http\Controllers\admin\AdminController::class,'userskills'])->name('userskills');
+Route::get('/ticket',[App\Http\Controllers\admin\AdminController::class,'ticket'])->name('ticket');
+Route::get('/ticket/edit{id}',[App\Http\Controllers\admin\AdminController::class,'editTicket'])->name('editticket');
+Route::post('ticket/{id}',[App\Http\Controllers\admin\AdminController::class,'updateTicket'])->name('ticketupdate');
 
+Route::get('/userskills/edit{id}',[App\Http\Controllers\admin\AdminController::class,'edit'])->name('edit');
+Route::post('userskills/{id}',[App\Http\Controllers\admin\AdminController::class,'update'])->name('update');
 

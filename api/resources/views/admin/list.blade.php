@@ -105,6 +105,14 @@
 							</a>
 						</li>
 						<li class="nav-item">
+                                <a href="{{route('ticket')}}" class="nav-link ">
+                                  <i class="nav-icon fas fa-user-graduate"></i>
+                                  <p>
+                                    Ticket
+                                  </p>
+                                </a>
+                            </li>
+						<li class="nav-item">
 							<a href="business-lead.html" class="nav-link">
 								<i class="nav-icon far fa-building"></i>
 								<p>
@@ -281,10 +289,12 @@
 										<td>{{ $value->name }}</td>
 
 										<td>{{ $value->email }}</td>
-										<td><span class="tag tag-success">Active</span></td>
-
+										@if($value->status=='active')
+										<td><span class="tag tag-success" class="tag tag-danger" >{{$value->status}}</span></td>
+@else
+<td><span class="tag tag-danger" >{{$value->status}}</span></td>
 									</tr>
-
+@endif
 									@endforeach
 
 								</tbody>
@@ -297,6 +307,13 @@
 						</tr>
 						</tbody>
 						</table>
+						<span>
+						{{$users->links() }}
+						</span>
+						<style>.w-5{
+							display:none
+						}
+						</style>
 					</div>
 				</div>
 		</div>

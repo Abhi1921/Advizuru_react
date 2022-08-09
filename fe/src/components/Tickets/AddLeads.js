@@ -53,9 +53,26 @@ class AddLeads extends React.Component{
                
             });
             this.form.onformsubmit = (fields) => {
-                console.log("please submit your form");
+                let obj = fields;
+                obj.skill_id = obj.skills;
+                obj.country_id = obj.country;
+                obj.state_id = obj.state;
+                obj.city_id = obj.city;
+                obj.industry_id = obj.industry;
+                obj.designation_id = obj.designation;
+              
+                axios.post(process.env.REACT_APP_BASE_URL + 'add/bussiness-lead', obj)
+                .then(function (response) {
+                    console.log(response);
+                    alert("Saved Successfully");
+                }) 
+                .catch(function (error) {
+                    console.log(error, 'error');
+                    return error;
+                }); 
             }
-        };
+            
+    };
         async componentDidMount() {
            
        

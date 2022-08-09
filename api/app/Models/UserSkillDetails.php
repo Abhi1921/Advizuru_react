@@ -1,13 +1,20 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserSkillDetails extends Model
 {
     use HasFactory;
+   
+    public function alskills(){
+        return $this->belongsTo(allSkills::class,'skill_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
     protected $fillable = [
         'description',
         'year_of_experience',
@@ -19,6 +26,7 @@ class UserSkillDetails extends Model
         'available',
         'profile_id',
         'skill_id',
+        'user_id'
 
     ];
     /**

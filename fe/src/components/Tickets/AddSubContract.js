@@ -64,9 +64,27 @@ class AddSubContract extends React.Component{
                
             });
             this.form.onformsubmit = (fields) => {
-                console.log("please submit your form");
+                let obj = fields;
+                obj.skill_id = obj.skills;
+                obj.country_id = obj.country;
+                obj.state_id = obj.state;
+                obj.city_id = obj.city;
+                obj.industry_id = obj.industry;
+                obj.designation_id = obj.designation;
+              
+                axios.post(process.env.REACT_APP_BASE_URL + 'add/sub-contract', obj)
+                .then(function (response) {
+                    console.log(response);
+                    alert("Saved Successfully");
+                }) 
+                .catch(function (error) {
+                    console.log(error, 'error');
+                    return error;
+                }); 
             }
-        };
+            
+    };
+       
             async componentDidMount() {
            
                
@@ -75,9 +93,17 @@ class AddSubContract extends React.Component{
                 this.getState();
                 this.getCity();
                 this.getAllSkill();
+                this.getAllIndustry();
                
                 
             } 
+            getAllIndustry = async(request) => {
+                const req = await axios(process.env.REACT_APP_BASE_URL + 'industry');
+    
+                console.log(req, 'reqindustry');
+                this.setState((prevState)=>({...prevState, allIndustry: req.data.data}));
+                
+                };
             getAllEducation_Qualification = async(request) => {
                 const req = await axios(process.env.REACT_APP_BASE_URL + 'degree');
 
@@ -148,9 +174,15 @@ class AddSubContract extends React.Component{
 
                                 </div>
                                 <div className="form-group">
-                                    <label>Industry<sup className="text-danger">*</sup></label>
-                                    <select name="industry" className="js-states form-select" style={{width:'100%'}} onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.industry}>
-                                        <option key="1" >Select Industry</option>
+                                            <label>industry<sup className="text-danger">*</sup></label>
+                                            <select name="industry" id="institutionsfield" className="js-states form-control select2-hidden-accessible" style={{width:'100%'}} tabIndex="-1" aria-hidden="true" data-select2-id="select2-data-institutionsfield" onBlur={this.form.handleBlurEvent} onChange={this.form.handleChangeEvent} value={this.state.fields.institution}>
+                                            <option data-select2-id="select2-data-3-bq7b">Select Industry</option>
+                                            {
+                                                this.state.allIndustry && this.state.allIndustry.map((row) => {
+                                                    return (<option key = {row.industry_id} value={row.industry_id}>  {row.industry_name }</option>)
+                                                })
+                                            }
+                                  
                                     </select>
                                     <div className="help-block"></div>
                                     <label className="error"> {this.state.errors.industry ? this.state.errors.industry : ""} </label>

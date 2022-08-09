@@ -103,6 +103,14 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{route('ticket')}}" class="nav-link ">
+                                  <i class="nav-icon fas fa-user-graduate"></i>
+                                  <p>
+                                    Ticket
+                                  </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="business-lead.html" class="nav-link">
                                   <i class="nav-icon far fa-building"></i>
                                   <p>

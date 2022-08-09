@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class allSkills extends Model
 {
     use HasFactory;
     
+  
     protected $casts = [
         'skill_id' => 'integer',
         'city_id' => 'integer',

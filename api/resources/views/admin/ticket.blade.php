@@ -95,7 +95,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('userskills')}}" class="nav-link active">
+                                <a href="{{route('userskills')}}" class="nav-link">
                                   <i class="nav-icon fas fa-user-graduate"></i>
                                   <p>
                                     User Skill
@@ -103,7 +103,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('ticket')}}" class="nav-link ">
+                                <a href="{{route('ticket')}}" class="nav-link active">
                                   <i class="nav-icon fas fa-user-graduate"></i>
                                   <p>
                                     Ticket
@@ -187,13 +187,13 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">User Skill</h1>
+                                <h1 class="m-0">Ticket</h1>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">User Skill</li>
+                                    <li class="breadcrumb-item active">Ticket</li>
                                 </ol>
                             </div>
                             <!-- /.col -->
@@ -211,7 +211,7 @@
 								<h3 class="card-title">
 									<div class="left">
 										<i class="fas fa-clipboard-list mr-1"></i>
-										User Not Added Skill
+										Ticket Added
 									</div>
 									<div class="right">
 										<button type="button" class="btn btn-light btn-sm">Export <i class="fas fa-file-download"></i></button>
@@ -227,7 +227,9 @@
 										<th>User ID</th>
 
 										<th>Skill ID</th>
-										<th>Status</th>
+										<th>Budget</th>
+                                        <th>Availability</th>
+                                        <th>Status</th>
 										
 									</tr>
 								</thead>
@@ -239,11 +241,16 @@
 									<tr>
 										<td>{{ $value->id }}</td>
 
-                                        <td>{{ $value->user->name}}</td>
+										<td>{{ $value->user->name }}</td>
 
 										<td>{{ $value->alskills->name }}</td>
+                                        <td>{{ $value->budget }}</td>
+                                        <td>{{ $value->availability }}</td>
+
 										<td><span class="tag tag-success">Active</span></td>
-                                        <td><a href="{{route('edit',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                        
+											
+											<td><a href="{{route('editticket',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
 											<a href="javascript:void(0);" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
 									</tr>
 

@@ -218,18 +218,21 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-4">
+									<form>
 									<div class="form-group">
 										<label>Select Status</label>
-										<select class="custom-select form-control-border">
-											<option>Select Status</option>
-											<option>Active</option>
-											<option>Inactive</option>
-										</select>
-									</div>
+										<input type="search" class="form-control" placeholder="Search" value="{{$search}}" name="search">
+								
 								</div>
+	
+      
+									</div>
 								<div class="col-md-5 d-flex align-items-center">
-									<button type="button" class="btn w-30 btn-primary">Search</button>
-									<button type="button" class="btn w-30 btn-danger">Clear</button>
+								<div class="input-group-btn">
+        <button class="btn w-24 btn-primary w-24" type="submit"><i class="glyphicon glyphicon-search"></i>search </button>
+      </div>
+								<p>&nbsp;</p>	
+								<a href="patnerlist" class="btn w-24 btn-danger">Clear</a>
 								</div>
 							</div>
 							<div class="row">
@@ -244,28 +247,32 @@
 								</div>
 								<div class="col-md-5">
 									<select class="custom-select form-control-border">
-										<option>Test Subject 1</option>
-										<option>Job Opening</option>
-										<option>SAP ABAP</option>
-										<option>Financial Analyst Fresher Mumbai</option>
-										<option>looking for SAP MM assignment</option>
-										<option>Test -Aalok</option>
+										<option>Users</option>
+									
 									</select>
 								</div>
 								<div class="col-md-2">
-									<button type="button" class="btn w-100 btn-primary">Set Bulk Email</button>
+								<a href="{{route('pdf')}}" class="btn w-23 btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i>Export</a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="card card-primary">
 						<div class="card-header ui-sortable-handle" style="cursor: move;">
-							<h3 class="card-title">
+					
+						<h3 class="card-title">
 								<i class="fas fa-clipboard-list mr-1"></i>
 								User Data
 							</h3>
 						</div>
-						<div class="card-body table-responsive p-0" style="height: 460px;">
+						{{-- <form>
+						<div class="input-group">
+      <input type="search" class="form-control" placeholder="Search" value="{{$search}}" name="search">
+      <div class="input-group-btn">
+       
+      </div>
+    </div> --}}
+			<div class="card-body table-responsive p-0" style="height: 460px;">
 							<table class="table table-head-fixed text-nowrap table-sm">
 								<thead>
 									<tr>
@@ -307,9 +314,9 @@
 						</tr>
 						</tbody>
 						</table>
-						<span>
+						{{-- <span>
 						{{$users->links() }}
-						</span>
+						</span> --}}
 						<style>.w-5{
 							display:none
 						}

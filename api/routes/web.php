@@ -33,3 +33,4 @@ Route::get('delete/{id}',[App\Http\Controllers\admin\AdminController::class,'tic
 Route::get('/userskills/edit{id}',[App\Http\Controllers\admin\AdminController::class,'edit'])->name('edit');
 Route::post('userskills/{id}',[App\Http\Controllers\admin\AdminController::class,'update'])->name('update');
 
+Route::get('/pdf',[App\Http\Controllers\admin\AdminController::class,'generate_pdf'])->name('pdf');

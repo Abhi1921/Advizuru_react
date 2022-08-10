@@ -8,6 +8,7 @@ use App\Models\RaiseTicket;
 use App\Models\UserSkillDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PDF;
 
 class AdminController extends Controller
 {
@@ -60,11 +61,18 @@ return redirect()->route('home')
 }
     
     
-    public function index()
+    public function index(Request $request)
     {
-        $users = DB::table('users')->select('id', 'name', 'email','status')->get();
-        $users=User::paginate(5);
-        return view('admin.list',['users'=>$users])->with('users', $users);
+        $search=$request['search'] ?? "";
+        if ($search != "")
+        $users=User::where('name','Like',"%$search%")->get();
+        else{
+           $users=User::all();
+        }
+
+      
+        $users=compact('users','search');
+        return view('admin.list')->with($users);
     }
     public function userskills()
     {
@@ -93,5 +101,14 @@ public function ticketdelete(Request $request ,$id)
         $edit->delete();
         return redirect('/ticket')->with('success', 'Game Data is successfully deleted');
 }
-    
+  
+
+public function generate_pdf(){
+    $users=User::all();
+    $pdf = PDF::loadView('pdf',[
+      'users'=>$users
+    ]);
+	return $pdf->stream('document.pdf');
+}
+
 }

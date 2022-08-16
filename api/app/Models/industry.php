@@ -25,4 +25,9 @@ class industry extends Model
         'industry_id' => 'integer',
         'user_id' => 'integer',
     ];
+    public function industryall(){
+        return $this->belongsTo(industry::class,'industry_id');
+    }
+
+   
 }

@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hire Freelancers and Find Freelance Jobs Online - Advizuru</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha256-aAr2Zpq8MZ+YA/D6JtRD3xtrwpEz2IqOS+pWD/7XKIw=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha256-OFRAJNoaD8L3Br5lglV7VyLRf0itmoBzWUoM+Sji4/8=" crossorigin="anonymous"></script>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -15,6 +18,8 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="assets/css/adminlte.css">
     </head>
+  <!-- small modal -->
+ 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -78,31 +83,31 @@
                     </div>
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li class="nav-item">
-                                <a href="{{route('home')}}" class="nav-link">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Dashboard
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('patnerlist')}}" class="nav-link">
-                                  <i class="nav-icon fas fa-clipboard-list"></i>
-                                  <p>
-                                    Partner List
-                                  </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('userskills')}}" class="nav-link active">
-                                  <i class="nav-icon fas fa-user-graduate"></i>
-                                  <p>
-                                    User Skill
-                                  </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
+                        <li class="nav-item">
+							<a href="{{route('home')}}" class="nav-link">
+								<i class="nav-icon fas fa-tachometer-alt"></i>
+								<p>
+									Dashboard
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{route('patnerlist')}}" class="nav-link active">
+								<i class="nav-icon fas fa-clipboard-list"></i>
+								<p>
+									Partner List
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{route('userskills')}}" class="nav-link">
+								<i class="nav-icon fas fa-user-graduate"></i>
+								<p>
+									User Skill
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
                                 <a href="{{route('ticket')}}" class="nav-link ">
                                   <i class="nav-icon fas fa-user-graduate"></i>
                                   <p>
@@ -111,7 +116,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('bussiness')}}" class="nav-link">
+                                <a href="{{route('bussiness')}}" class="nav-link active">
                                   <i class="nav-icon far fa-building"></i>
                                   <p>
                                     Business Lead
@@ -187,13 +192,13 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">User Skill</h1>
+                                <h1 class="m-0">Business Lead</h1>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">User Skill</li>
+                                    <li class="breadcrumb-item active">Business Lead</li>
                                 </ol>
                             </div>
                             <!-- /.col -->
@@ -204,6 +209,47 @@
                 </div>
                 <!-- /.content-header -->
                 <!-- Main content -->
+                <div class="card-body">
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Bussiness Lead ADD</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-danger" style="display:none"></div>
+    
+    <form class="image-upload" method="post"  enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="auther_name" id="auther_name" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Industry_id</label>
+            <input type="text" name="name" id="name" class="form-control"/>
+        </div>  
+        <div class="form-group">
+            <label>Category_Id</label>
+            <input type="text" name="auther_name" id="auther_name" class="form-control"/>
+        </div>
+       
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-success" name="submit" id="formSubmit">Save</button>
+</div>
+</div>
+</div>
+</div>
+
+
                 <section class="content">
                     <div class="container-fluid">
 						<div class="card card-primary">
@@ -211,11 +257,11 @@
 								<h3 class="card-title">
 									<div class="left">
 										<i class="fas fa-clipboard-list mr-1"></i>
-										User Not Added Skill
+										Business Lead
 									</div>
 									<div class="right">
-									<a href="{{route('pdfskills')}}" class="btn btn-primary btn-sm">Export <i class="fas fa-file-download"></i>
-									</div></a>
+										<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#exampleModal">Add Lead <i class="fa fa-plus"></i></button>
+									</div>
 								</h3>
 							</div>
 							<div class="card-body table-responsive p-0" style="height: 460px;">
@@ -226,8 +272,10 @@
 
 										<th>User ID</th>
 
-										<th>Skill ID</th>
-										<th>Status</th>
+										<th>Industry ID</th>
+										<th>Category ID</th>
+                                        <th>Cost</th>
+                                        <th>Status</th>
 										
 									</tr>
 								</thead>
@@ -235,16 +283,21 @@
 
 
 
-									@foreach($user as $value)
+									@foreach($bussiness as $value)
 									<tr>
 										<td>{{ $value->id }}</td>
 
-                                        <td>{{ $value->user->name}}</td>
+										<td>{{ $value->user->name}}</td>
 
-										<td>{{ $value->alskills->name }}</td>
+										<td>{{ $value->industry_id }}</td>
+                                        <td>{{ $value->category_id }}</td>
+                                        <td>{{ $value->expected_cost }}</td>
+
 										<td><span class="tag tag-success">Active</span></td>
-                                        <td><a href="{{route('edit',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-											<a href="{{route('userdelete',$value->id) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
+                                        
+											
+											<td><a href="{{route('editticket',$value->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+											<a href="{{route('ticketdelete',$value->id) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></td>										
 									</tr>
 
 									@endforeach
@@ -254,11 +307,13 @@
 							</div>
 						</div>
                     </div>
+                    
                     <!-- /.container-fluid -->
                 </section>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
+            
             <footer class="main-footer">
                 <strong>Copyright &copy; 2021 <a href="advizuru.com">PPN Solutions Pvt. Ltd.</a>.</strong>
                 All rights reserved.
@@ -278,6 +333,10 @@
             $.widget.bridge('uibutton', $.ui.button)
         </script> -->
         <!-- Bootstrap 4 -->
+        <script>
+
+  
+        </script>
         <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/adminlte.js"></script>
         <!-- AdminLTE for demo purposes -->

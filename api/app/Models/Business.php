@@ -37,4 +37,14 @@ class Business extends Model
         'industry_id' => 'integer',
         'user_id' => 'integer',
     ];
+    public function alskills(){
+        return $this->belongsTo(allSkills::class,'skill_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
+    public function industryall(){
+        return $this->belongsTo(industry::class,'industry_id');
+    }
 }

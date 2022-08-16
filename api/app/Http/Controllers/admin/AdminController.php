@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\RaiseTicket;
 use App\Models\UserSkillDetails;
+use App\Models\Business;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use PDF;
@@ -80,6 +81,12 @@ return redirect()->route('home')
 
         return view('admin.userskills')->with('user', $user);
     }
+    public function bussiness()
+    {
+         $bussiness= Business::select('id','user_id','industry_id','category_id','expected_cost')->get();
+
+        return view('admin.bussiness')->with('bussiness', $bussiness);
+    }
     public function ticket()
     {
          $user = RaiseTicket::select('id', 'user_id', 'skill_id','budget','availability')->get();
@@ -111,4 +118,20 @@ public function generate_pdf(){
 	return $pdf->stream('document.pdf');
 }
 
+public function generate_pdf_userskills(){
+    $users=UserSkillDetails::all();
+   
+    $pdff = PDF::loadView('admin.pdf',[
+      'users'=>$users
+      
+    ]);
+   	return $pdff->stream('documenl.pdf');
+}
+public function generate_pdf_ticket(){
+    $users=TaiseTicket::all();
+    $pdf = PDF::loadView('pdf',[
+      'users'=>$users
+    ]);
+	return $pdf->stream('document.pdf');
+}
 }

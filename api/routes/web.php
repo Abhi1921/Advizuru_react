@@ -34,3 +34,6 @@ Route::get('/userskills/edit{id}',[App\Http\Controllers\admin\AdminController::c
 Route::post('userskills/{id}',[App\Http\Controllers\admin\AdminController::class,'update'])->name('update');
 
 Route::get('/pdf',[App\Http\Controllers\admin\AdminController::class,'generate_pdf'])->name('pdf');
+Route::get('/pdf/skill',[App\Http\Controllers\admin\AdminController::class,'generate_pdf_userskills'])->name('pdfskills');
+Route::get('/pdf/ticket',[App\Http\Controllers\admin\AdminController::class,'generate_pdf_ticket'])->name('pdfticket');
+Route::get('bussiness',[App\Http\Controllers\admin\AdminController::class,'bussiness'])->name('bussiness');

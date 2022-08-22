@@ -92,7 +92,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{route('patnerlist')}}" class="nav-link active">
+							<a href="{{route('patnerlist')}}" class="nav-link ">
 								<i class="nav-icon fas fa-clipboard-list"></i>
 								<p>
 									Partner List
@@ -224,26 +224,29 @@
 <div class="modal-body">
     <div class="alert alert-danger" style="display:none"></div>
     
-    <form class="image-upload" method="post"  enctype="multipart/form-data">
+    <form class="image-upload" action="{{route('bus')}}" method="post">
         @csrf
         <div class="form-group">
             <label>Name</label>
-            <input type="text" name="auther_name" id="auther_name" class="form-control"/>
-        </div>
+            <input type="text" name="name"  class="form-control"/>
+            </div>
         <div class="form-group">
             <label>Industry_id</label>
-            <input type="text" name="name" id="name" class="form-control"/>
-        </div>  
+            <input type="text" name="industry_id" class="form-control"/>
+            </div>
         <div class="form-group">
             <label>Category_Id</label>
-            <input type="text" name="auther_name" id="auther_name" class="form-control"/>
-        </div>
-       
-    </form>
+            <input type="text" name="category_id"  class="form-control"/>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-success" name="submit" id="formSubmit">Save</button>
+<div class="form-group">
+            <label>Cost</label>
+            <input type="text" name="cost"  class="form-control"/>
+</div>
+            <button type="submit" class="btn btn-danger" name="submit">cancel</button>
+          <button type="submit" class="btn btn-success" name="submit">Save</button>
+
+
+</form>
 </div>
 </div>
 </div>

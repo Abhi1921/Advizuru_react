@@ -7,53 +7,35 @@
     <title>Document</title>
 </head>
 <style>
-    * {
-  font-family: sans-serif; /* Change your font family */
+   .zui-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+  
 }
-
-.content-table {
-  border-collapse: collapse;
-  margin: 50px 0;
-  font-size: 0.9em;
-  min-width: 550px;
-  border-radius: 5px 5px 0 0;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+   
 }
-
-.content-table thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  text-align: left;
-  font-weight: bold;
-}
-
-.content-table th,
-.content-table td {
-  padding: 12px 15px;
-}
-
-.content-table tbody tr {
-  border-bottom: 1px solid #dddddd;
-}
-
-.content-table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-}
-
-.content-table tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
-}
-
-.content-table tbody tr.active-row {
-  font-weight: bold;
-  color: #009879;
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    width:150px;
+    height:50px;
 }
 
 </style>
 <body>
-<div class="card-body table-responsive p-0" style="height: 460px;">
-<table class="content-table">
+<div class="card-body table-responsive p-0">
+<table class="zui-table">
   <thead>
                                     <tr>
 										<th>Id</th>

@@ -292,14 +292,14 @@ class TicketController extends Controller
             $user->effort_type = $request->input('effort_type');
             $user->contact_person = $request->input('contact_person');
             $user->expected_cost_currency = $request->input('expected_cost_currency');
-            $user->contact_person_email = $request->input(['contact_person_email' => 'required|unique']);
-            $user->contact_person_mobile = $request->input('contact_person_mobile');
+            // $user->contact_person_email = $request->input(['contact_person_email' => 'required|unique']);
+            // $user->contact_person_mobile = $request->input('contact_person_mobile');
             $user->country_id = $request->input('country_id');
             $user->state_id = $request->input('state_id');
             $user->city_id = $request->input('city_id');
             $user->start_date = date("Y-m-d", strtotime($request->input('start_date')));
             $user->recruitment_consulting_pct = $request->input('recruitment_consulting_pct');
-            $user->contact_person_email = $request->input('contact_person_email');
+            // $user->contact_person_email = $request->input('contact_person_email');
             $user->description = $request->input('description');
             $user->status = $request->input('status');
             $user->save();

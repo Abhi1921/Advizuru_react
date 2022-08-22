@@ -88,7 +88,7 @@ Route::controller(TicketController::class)->group(function () {
     Route::delete('recruitment/delete/{User}',  'destroyRecruitment');
     // end
     
-    Route::post('add/bussiness-lead','bussinesslead');
+    Route::post('add/bussiness-lead','bussinesslead')->name('bus');
     Route::post('add/service','addService');
     Route::post('add/sub-contract','addSubContract');
     
